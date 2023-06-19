@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:namer_app/components/app_bar_title.dart';
+import 'package:namer_app/components/sidebar.dart';
 import 'package:namer_app/my_app_state.dart';
 import 'package:namer_app/page/favorite_page.dart';
+import 'package:namer_app/page/finance_page.dart';
 import 'package:namer_app/page/generate_page.dart';
 import 'package:provider/provider.dart';
 
@@ -34,7 +37,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int selectedIndex = 0;
+  int selectedIndex = 2;
+
+  void onDestinationSelected(int index) {
+    setState(() {
+      selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,34 +55,26 @@ class _MyHomePageState extends State<MyHomePage> {
       case 1:
         page = FavoritePage();
         break;
+      case 2:
+        page = FinancePage();
+        break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
     }
 
     return Scaffold(
+      appBar: AppBar(
+        titleSpacing: 0,
+        centerTitle: false,
+        toolbarHeight: 66,
+        // shadowColor: Colors.black12,
+        title: AppBarTitle(),
+      ),
       body: Row(
         children: [
-          SafeArea(
-            child: NavigationRail(
-              extended: true,
-              destinations: [
-                NavigationRailDestination(
-                  icon: Icon(Icons.home),
-                  label: Text('Home'),
-                ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.favorite),
-                  label: Text('Favorites'),
-                ),
-              ],
-              selectedIndex: selectedIndex,
-              onDestinationSelected: (value) {
-                setState(() {
-                  selectedIndex = value;
-                });
-              },
-            ),
-          ),
+          Sidebar(
+              onDestinationSelected: onDestinationSelected,
+              selectedIndex: selectedIndex),
           Expanded(
             child: Container(
               color: Theme.of(context).colorScheme.primaryContainer,
