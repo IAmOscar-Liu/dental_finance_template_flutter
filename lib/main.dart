@@ -5,7 +5,10 @@ import 'package:namer_app/my_app_state.dart';
 import 'package:namer_app/page/favorite_page.dart';
 import 'package:namer_app/page/finance_page.dart';
 import 'package:namer_app/page/generate_page.dart';
+import 'package:namer_app/page/order_page.dart';
 import 'package:provider/provider.dart';
+
+// flutter run -d chrome --web-renderer html
 
 void main() {
   runApp(MyApp());
@@ -37,7 +40,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int selectedIndex = 2;
+  int selectedIndex = 3;
 
   void onDestinationSelected(int index) {
     setState(() {
@@ -58,6 +61,9 @@ class _MyHomePageState extends State<MyHomePage> {
       case 2:
         page = FinancePage();
         break;
+      case 3:
+        page = OrderPage();
+        break;  
       default:
         throw UnimplementedError('no widget for $selectedIndex');
     }

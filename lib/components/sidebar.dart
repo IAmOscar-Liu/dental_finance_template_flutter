@@ -19,7 +19,9 @@ class Sidebar extends StatelessWidget {
   final List<Item> navigationRailDestinations = [
     Item(icon: Icon(Icons.home), content: "Home"),
     Item(icon: Icon(Icons.favorite), content: 'Favorites'),
-    Item(icon: Icon(Icons.attach_money), content: 'Finance')
+    Item(icon: Icon(Icons.attach_money), content: 'Finance'),
+    Item(icon: Icon(Icons.dvr), content: 'Order'),
+
   ];
 
   @override
