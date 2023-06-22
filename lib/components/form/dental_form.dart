@@ -1,26 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:namer_app/components/custom_dropdown_menu.dart';
 import 'package:namer_app/district.dart';
+import 'package:namer_app/my_app_state.dart';
+import 'package:provider/provider.dart';
 
-enum DentalStatus {
-  contact,
-  underContact,
-  terminated,
-}
-
-class DentalForm extends StatefulWidget {
+class DentalForm extends StatelessWidget {
   const DentalForm({super.key});
 
   @override
-  State<DentalForm> createState() => DenatlForm();
-}
-
-class DenatlForm extends State<DentalForm> {
-  DentalStatus? _dentalStatus = DentalStatus.underContact;
-  String? selectedCityTw;
-
-  @override
   Widget build(BuildContext context) {
+    MyAppState appState = context.watch<MyAppState>();
+    String? dentalStatus = appState.dentalForm["牙技所狀態"];
+
     return Form(
       child: Row(
         mainAxisSize: MainAxisSize.max,
@@ -70,6 +61,10 @@ class DenatlForm extends State<DentalForm> {
                     child: SizedBox(
                       height: 32,
                       child: TextFormField(
+                        initialValue: appState.dentalForm["牙技所統一編號"],
+                        onChanged: (value) {
+                          appState.setDentalForm(key: "牙技所統一編號", value: value);
+                        },
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.only(left: 10),
                             enabledBorder: OutlineInputBorder(
@@ -90,7 +85,13 @@ class DenatlForm extends State<DentalForm> {
                           child: SizedBox(
                             height: 32,
                             child: TextFormField(
+                              initialValue: appState.dentalForm["牙技所聯絡人"],
+                              onChanged: (value) {
+                                appState.setDentalForm(
+                                    key: "牙技所聯絡人", value: value);
+                              },
                               decoration: InputDecoration(
+                                  hintText: "e.g. 王小明",
                                   contentPadding: EdgeInsets.only(left: 10),
                                   enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
@@ -112,14 +113,16 @@ class DenatlForm extends State<DentalForm> {
                   ),
                 ]),
                 TableRow(children: [
-                  Text("牙技所聯絡電話"),
+                  Text("牙技所電話"),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: SizedBox(
                       height: 32,
                       child: TextFormField(
+                        initialValue: appState.dentalForm["牙技所電話"],
                         keyboardType: TextInputType.phone,
                         decoration: InputDecoration(
+                            hintText: "e.g. 02-2222-2222",
                             contentPadding: EdgeInsets.only(left: 10),
                             enabledBorder: OutlineInputBorder(
                                 borderSide:
@@ -135,6 +138,7 @@ class DenatlForm extends State<DentalForm> {
                     child: SizedBox(
                       height: 32,
                       child: TextFormField(
+                        initialValue: appState.dentalForm["牙技所Email"],
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                             hintText: "example@example.com",
@@ -156,13 +160,14 @@ class DenatlForm extends State<DentalForm> {
                         CustomDropdownMenu(
                             key: UniqueKey(),
                             labelname: '縣市',
-                            initialSelection: selectedCityTw ?? "請選擇",
+                            initialSelection: appState.dentalForm["牙技所縣市"],
                             menuSelections: citiesTW,
-                            onSelect: (String value) {
-                              print("You select $value");
-                              setState(() {
-                                selectedCityTw = value;
-                              });
+                            onSelect: (String? value) {
+                              // print("You select $value");
+                              appState.setDentalForm(
+                                  key: "牙技所縣市", value: value ?? "請選擇");
+                              appState.setDentalForm(
+                                  key: "牙技所鄉鎮市區", value: "請選擇");
                             }),
                         SizedBox(
                           width: 10,
@@ -170,10 +175,14 @@ class DenatlForm extends State<DentalForm> {
                         CustomDropdownMenu(
                             key: UniqueKey(),
                             labelname: '鄉鎮市區',
+                            initialSelection: appState.dentalForm["牙技所鄉鎮市區"],
                             menuSelections:
-                                districtTW[selectedCityTw] ?? ["請選擇"],
-                            onSelect: (String value) {
-                              print("You select $value");
+                                districtTW[appState.dentalForm["牙技所縣市"]] ??
+                                    ["請選擇"],
+                            onSelect: (String? value) {
+                              // print("You select $value");
+                              appState.setDentalForm(
+                                  key: "牙技所鄉鎮市區", value: value ?? "請選擇");
                             })
                       ],
                     ),
@@ -186,10 +195,15 @@ class DenatlForm extends State<DentalForm> {
                     child: SizedBox(
                       height: 75,
                       child: TextFormField(
+                        initialValue: appState.dentalForm["牙技所地址"],
+                        onChanged: (value) {
+                          appState.setDentalForm(key: "牙技所地址", value: value);
+                        },
                         keyboardType: TextInputType.multiline,
                         maxLines: null,
                         expands: true,
                         decoration: InputDecoration(
+                            hintText: "e.g. 工業東三路1號5樓",
                             contentPadding: EdgeInsets.only(left: 10),
                             enabledBorder: OutlineInputBorder(
                                 borderSide:
@@ -225,12 +239,12 @@ class DenatlForm extends State<DentalForm> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Radio(
-                                  value: DentalStatus.contact,
-                                  groupValue: _dentalStatus,
-                                  onChanged: (DentalStatus? value) {
-                                    setState(() {
-                                      _dentalStatus = value;
-                                    });
+                                  value: "contact",
+                                  groupValue: dentalStatus,
+                                  onChanged: (String? value) {
+                                    appState.setDentalForm(
+                                        key: "牙技所狀態",
+                                        value: value ?? "contact");
                                   }),
                               Text("聯繫中"),
                             ],
@@ -239,12 +253,12 @@ class DenatlForm extends State<DentalForm> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Radio(
-                                  value: DentalStatus.underContact,
-                                  groupValue: _dentalStatus,
-                                  onChanged: (DentalStatus? value) {
-                                    setState(() {
-                                      _dentalStatus = value;
-                                    });
+                                  value: "underContract",
+                                  groupValue: dentalStatus,
+                                  onChanged: (String? value) {
+                                    appState.setDentalForm(
+                                        key: "牙技所狀態",
+                                        value: value ?? "contact");
                                   }),
                               Text("合約中"),
                             ],
@@ -253,12 +267,12 @@ class DenatlForm extends State<DentalForm> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Radio(
-                                  value: DentalStatus.terminated,
-                                  groupValue: _dentalStatus,
-                                  onChanged: (DentalStatus? value) {
-                                    setState(() {
-                                      _dentalStatus = value;
-                                    });
+                                  value: "terminated",
+                                  groupValue: dentalStatus,
+                                  onChanged: (String? value) {
+                                    appState.setDentalForm(
+                                        key: "牙技所狀態",
+                                        value: value ?? "contact");
                                   }),
                               Text("已解約"),
                             ],
@@ -271,9 +285,13 @@ class DenatlForm extends State<DentalForm> {
                       Padding(
                           padding: EdgeInsets.all(8),
                           child: CustomDropdownMenu(
+                            initialSelection: appState.contractForm["合約種類"],
                             labelname: "合約類別",
                             menuSelections: ["服務平台合約", "設備租賃合約", "設備買斷合約"],
-                            onSelect: (String value) {},
+                            onSelect: (String? value) {
+                              appState.setContractForm(
+                                  key: "合約種類", value: value ?? "請選擇");
+                            },
                           )),
                     ]),
                     TableRow(children: [
@@ -288,6 +306,10 @@ class DenatlForm extends State<DentalForm> {
                         child: SizedBox(
                           height: 150,
                           child: TextFormField(
+                            initialValue: appState.dentalForm["備註"],
+                            onChanged: (value) {
+                              appState.setDentalForm(key: "備註", value: value);
+                            },
                             keyboardType: TextInputType.multiline,
                             maxLines: null,
                             expands: true,

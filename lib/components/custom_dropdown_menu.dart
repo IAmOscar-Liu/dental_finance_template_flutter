@@ -4,10 +4,12 @@ class CustomDropdownMenu extends StatefulWidget {
   const CustomDropdownMenu(
       {super.key,
       required this.labelname,
+      this.initialSelection = "請選擇",
       required this.menuSelections,
       required this.onSelect});
 
   final String labelname;
+  final String? initialSelection;
   final List<String> menuSelections;
   final Function onSelect;
 
@@ -34,7 +36,7 @@ class _CustomDropdownMenuState extends State<CustomDropdownMenu> {
     }
 
     return DropdownMenu<String>(
-      initialSelection: "請選擇",
+      initialSelection: widget.initialSelection,
       controller: controller,
       label: Text(widget.labelname),
       dropdownMenuEntries: entries,

@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:namer_app/components/custom_dropdown_menu.dart';
-
-enum DentalStatus {
-  contact,
-  underContact,
-  terminated,
-}
+import 'package:namer_app/components/form/contract_form.dart';
+import 'package:namer_app/components/form/dental_form.dart';
+import 'package:namer_app/components/form/summarize_form.dart';
 
 class OrderPage extends StatefulWidget {
   @override
@@ -13,11 +9,29 @@ class OrderPage extends StatefulWidget {
 }
 
 class _OrderPageState extends State<OrderPage> {
-  DentalStatus? _dentalStatus = DentalStatus.underContact;
+  int currentFormStep = 1;
+
+  Color getActiveColor(int formStep) {
+    return formStep == currentFormStep ? Colors.black : Colors.grey;
+  }
+
+  Widget getCurrentForm() {
+    switch (currentFormStep) {
+      case 1:
+        return DentalForm();
+      case 2:
+        return ContractForm();
+      case 3: 
+        return SummarizeForm();
+      default:
+        return Container();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     // MyAppState appState = context.watch<MyAppState>();
+    //Color activeColor =
 
     return Column(
       mainAxisSize: MainAxisSize.max,
@@ -36,12 +50,27 @@ class _OrderPageState extends State<OrderPage> {
                           Container(
                             color: Colors.white,
                             child: Padding(
-                              padding:
-                                  EdgeInsets.symmetric(horizontal: 24, vertical: 4),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 24, vertical: 4),
                               child: Row(
                                 children: [
-                                  Icon(Icons.arrow_back_ios),
-                                  Text("新增合約")
+                                  Icon(Icons.dvr),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: Text(
+                                      "合約管理/新增合約",
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  TextButton(
+                                      onPressed: () {},
+                                      child: Row(
+                                        children: [
+                                          Icon(Icons.arrow_back_ios),
+                                          Text("上一頁"),
+                                        ],
+                                      ))
                                 ],
                               ),
                             ),
@@ -56,7 +85,11 @@ class _OrderPageState extends State<OrderPage> {
                               child: Row(
                                 children: [
                                   TextButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      setState(() {
+                                        currentFormStep = 1;
+                                      });
+                                    },
                                     child: Row(
                                       children: [
                                         Container(
@@ -64,13 +97,15 @@ class _OrderPageState extends State<OrderPage> {
                                           height: 25,
                                           decoration: BoxDecoration(
                                               border: Border.all(
-                                                  width: 2, color: Colors.black),
+                                                  width: 2,
+                                                  color: getActiveColor(1)),
                                               borderRadius:
                                                   BorderRadius.circular(1000)),
                                           child: Center(
                                             child: Text(
                                               "1",
-                                              style: TextStyle(color: Colors.black),
+                                              style: TextStyle(
+                                                  color: getActiveColor(1)),
                                             ),
                                           ),
                                         ),
@@ -78,8 +113,9 @@ class _OrderPageState extends State<OrderPage> {
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 4),
                                           child: Text(
-                                            "合約基本資料設定",
-                                            style: TextStyle(color: Colors.black),
+                                            "牙技所資料設定",
+                                            style: TextStyle(
+                                                color: getActiveColor(1)),
                                           ),
                                         )
                                       ],
@@ -91,7 +127,11 @@ class _OrderPageState extends State<OrderPage> {
                                     color: Colors.grey,
                                   )),
                                   TextButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      setState(() {
+                                        currentFormStep = 2;
+                                      });
+                                    },
                                     child: Row(
                                       children: [
                                         Container(
@@ -99,13 +139,15 @@ class _OrderPageState extends State<OrderPage> {
                                           height: 25,
                                           decoration: BoxDecoration(
                                               border: Border.all(
-                                                  width: 2, color: Colors.grey),
+                                                  width: 2,
+                                                  color: getActiveColor(2)),
                                               borderRadius:
                                                   BorderRadius.circular(1000)),
                                           child: Center(
                                             child: Text(
                                               "2",
-                                              style: TextStyle(color: Colors.grey),
+                                              style: TextStyle(
+                                                  color: getActiveColor(2)),
                                             ),
                                           ),
                                         ),
@@ -113,8 +155,9 @@ class _OrderPageState extends State<OrderPage> {
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 4),
                                           child: Text(
-                                            "合約進階功能設定",
-                                            style: TextStyle(color: Colors.grey),
+                                            "合約資料設定",
+                                            style: TextStyle(
+                                                color: getActiveColor(2)),
                                           ),
                                         )
                                       ],
@@ -126,7 +169,11 @@ class _OrderPageState extends State<OrderPage> {
                                     color: Colors.grey,
                                   )),
                                   TextButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      setState(() {
+                                        currentFormStep = 3;
+                                      });
+                                    },
                                     child: Row(
                                       children: [
                                         Container(
@@ -134,13 +181,15 @@ class _OrderPageState extends State<OrderPage> {
                                           height: 25,
                                           decoration: BoxDecoration(
                                               border: Border.all(
-                                                  width: 2, color: Colors.grey),
+                                                  width: 2,
+                                                  color: getActiveColor(3)),
                                               borderRadius:
                                                   BorderRadius.circular(1000)),
                                           child: Center(
                                             child: Text(
                                               "3",
-                                              style: TextStyle(color: Colors.grey),
+                                              style: TextStyle(
+                                                  color: getActiveColor(3)),
                                             ),
                                           ),
                                         ),
@@ -149,7 +198,8 @@ class _OrderPageState extends State<OrderPage> {
                                               horizontal: 4),
                                           child: Text(
                                             "合約內容確認",
-                                            style: TextStyle(color: Colors.grey),
+                                            style: TextStyle(
+                                                color: getActiveColor(3)),
                                           ),
                                         )
                                       ],
@@ -161,7 +211,9 @@ class _OrderPageState extends State<OrderPage> {
                             Spacer(
                               flex: 1,
                             ),
-                            FilledButton(onPressed: () {}, child: Text("刪除訂單"))
+                            FilledButton(
+                                onPressed: currentFormStep != 3 ? null : () {},
+                                child: Text("送出合約"))
                           ]),
                           SizedBox(
                             height: 16,
@@ -169,428 +221,37 @@ class _OrderPageState extends State<OrderPage> {
                           Container(
                             color: Colors.white,
                             child: Padding(
-                              padding:
-                                  EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 24, vertical: 8),
                               child: Column(
                                 children: [
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       TextButton(
-                                          onPressed: () {}, child: Text("合約類別")),
+                                          onPressed: currentFormStep == 1
+                                              ? null
+                                              : () {
+                                                  setState(() {
+                                                    currentFormStep--;
+                                                  });
+                                                },
+                                          child: Text("上一步")),
                                       SizedBox(
                                         width: 10,
                                       ),
                                       TextButton(
-                                          onPressed: () {}, child: Text("新建")),
+                                          onPressed: currentFormStep == 3
+                                              ? null
+                                              : () {
+                                                  setState(() {
+                                                    currentFormStep++;
+                                                  });
+                                                },
+                                          child: Text("下一步")),
                                     ],
                                   ),
-                                  Form(
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Expanded(
-                                          flex: 3,
-                                          child: Table(
-                                            defaultVerticalAlignment:
-                                                TableCellVerticalAlignment.middle,
-                                            columnWidths: {
-                                              0: FlexColumnWidth(
-                                                  0.2), // Width of label column
-                                              1: FlexColumnWidth(
-                                                  0.5), // Width of text field column
-                                              2: FlexColumnWidth(0.25)
-                                            },
-                                            children: [
-                                              TableRow(children: [
-                                                TableCell(
-                                                    child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Text("牙技所名稱"),
-                                                )),
-                                                TableCell(
-                                                    child: Row(
-                                                  children: [
-                                                    Text(
-                                                      "福家牙技所",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    TextButton(
-                                                      onPressed: () {},
-                                                      child: Text(
-                                                        "我想重新選擇牙技所",
-                                                        style: TextStyle(
-                                                            fontSize: 12,
-                                                            color: Colors.blue),
-                                                      ),
-                                                    )
-                                                  ],
-                                                )),
-                                                TableCell(child: Container())
-                                              ]),
-                                              TableRow(children: [
-                                                TableCell(
-                                                    child: Padding(
-                                                  padding: EdgeInsets.all(8),
-                                                  child: Text("牙技所自訂編號"),
-                                                )),
-                                                TableCell(
-                                                    child: Container(
-                                                  margin: EdgeInsets.symmetric(
-                                                      vertical: 8),
-                                                  height: 32,
-                                                  child: TextFormField(
-                                                    decoration: InputDecoration(
-                                                        contentPadding:
-                                                            EdgeInsets.only(
-                                                                left: 10),
-                                                        enabledBorder:
-                                                            OutlineInputBorder(
-                                                                borderSide:
-                                                                    BorderSide(
-                                                                        width: 2,
-                                                                        color: Colors
-                                                                            .grey))),
-                                                  ),
-                                                )),
-                                                TableCell(child: Container())
-                                              ]),
-                                              TableRow(children: [
-                                                TableCell(
-                                                    child: Padding(
-                                                  padding: EdgeInsets.all(8),
-                                                  child: Text("牙技所聯絡人"),
-                                                )),
-                                                TableCell(
-                                                    child: Container(
-                                                  margin: EdgeInsets.symmetric(
-                                                      vertical: 8),
-                                                  height: 32,
-                                                  child: TextFormField(
-                                                    decoration: InputDecoration(
-                                                        contentPadding:
-                                                            EdgeInsets.only(
-                                                                left: 10),
-                                                        enabledBorder:
-                                                            OutlineInputBorder(
-                                                                borderSide:
-                                                                    BorderSide(
-                                                                        width: 2,
-                                                                        color: Colors
-                                                                            .grey))),
-                                                  ),
-                                                )),
-                                                TableCell(
-                                                    child: Center(
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.symmetric(
-                                                            horizontal: 6),
-                                                    child: FilledButton(
-                                                        onPressed: () {},
-                                                        child: Text(
-                                                          "檢視相關合約",
-                                                          style: TextStyle(
-                                                              fontSize: 12),
-                                                        )),
-                                                  ),
-                                                ))
-                                              ]),
-                                              TableRow(children: [
-                                                TableCell(
-                                                    child: Padding(
-                                                  padding: EdgeInsets.all(8),
-                                                  child: Text("牙技所聯絡電話"),
-                                                )),
-                                                TableCell(
-                                                    child: Container(
-                                                  margin: EdgeInsets.symmetric(
-                                                      vertical: 8),
-                                                  height: 32,
-                                                  child: TextFormField(
-                                                    keyboardType:
-                                                        TextInputType.phone,
-                                                    decoration: InputDecoration(
-                                                        contentPadding:
-                                                            EdgeInsets.only(
-                                                                left: 10),
-                                                        enabledBorder:
-                                                            OutlineInputBorder(
-                                                                borderSide:
-                                                                    BorderSide(
-                                                                        width: 2,
-                                                                        color: Colors
-                                                                            .grey))),
-                                                  ),
-                                                )),
-                                                TableCell(child: Container())
-                                              ]),
-                                              TableRow(children: [
-                                                TableCell(
-                                                    child: Padding(
-                                                  padding: EdgeInsets.all(8),
-                                                  child: Text("牙技所郵件地址"),
-                                                )),
-                                                TableCell(
-                                                    child: Container(
-                                                  margin: EdgeInsets.symmetric(
-                                                      vertical: 8),
-                                                  height: 32,
-                                                  child: TextFormField(
-                                                    keyboardType:
-                                                        TextInputType.emailAddress,
-                                                    decoration: InputDecoration(
-                                                        contentPadding:
-                                                            EdgeInsets.only(
-                                                                left: 10),
-                                                        enabledBorder:
-                                                            OutlineInputBorder(
-                                                                borderSide:
-                                                                    BorderSide(
-                                                                        width: 2,
-                                                                        color: Colors
-                                                                            .grey))),
-                                                  ),
-                                                )),
-                                                TableCell(child: Container())
-                                              ]),
-                                              TableRow(children: [
-                                                TableCell(
-                                                    child: Padding(
-                                                  padding: EdgeInsets.all(8),
-                                                  child: Text("牙技所地址"),
-                                                )),
-                                                TableCell(
-                                                    child: Container(
-                                                        margin:
-                                                            EdgeInsets.symmetric(
-                                                                vertical: 8),
-                                                        child: Wrap(
-                                                          runSpacing: 6,
-                                                          children: [
-                                                            CustomDropdownMenu(
-                                                                labelname: '縣市',
-                                                                menuSelections: [
-                                                                  "台北市",
-                                                                  "新北市",
-                                                                  "新竹市"
-                                                                ],
-                                                                onSelect:
-                                                                    (String value) {
-                                                                  print(
-                                                                      "You select $value");
-                                                                }),
-                                                            SizedBox(
-                                                              width: 10,
-                                                            ),
-                                                            CustomDropdownMenu(
-                                                                labelname: '鄉鎮市區',
-                                                                menuSelections: [
-                                                                  "中正區",
-                                                                  "中山區",
-                                                                  "大安區",
-                                                                  "信義區",
-                                                                ],
-                                                                onSelect:
-                                                                    (String value) {
-                                                                  print(
-                                                                      "You select $value");
-                                                                })
-                                                          ],
-                                                        ))),
-                                                TableCell(child: Container()),
-                                              ]),
-                                              TableRow(children: [
-                                                TableCell(child: Container()),
-                                                TableCell(
-                                                    child: Container(
-                                                  height: 75,
-                                                  margin: EdgeInsets.only(
-                                                      top: 6, bottom: 6),
-                                                  child: TextFormField(
-                                                    keyboardType:
-                                                        TextInputType.multiline,
-                                                    maxLines: null,
-                                                    expands: true,
-                                                    decoration: InputDecoration(
-                                                        contentPadding:
-                                                            EdgeInsets.only(
-                                                                left: 10),
-                                                        enabledBorder:
-                                                            OutlineInputBorder(
-                                                                borderSide:
-                                                                    BorderSide(
-                                                                        width: 2,
-                                                                        color: Colors
-                                                                            .grey))),
-                                                  ),
-                                                )),
-                                                TableCell(child: Container()),
-                                              ])
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 12,
-                                        ),
-                                        Expanded(
-                                            flex: 2,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.only(top: 32.0),
-                                              child: Table(
-                                                columnWidths: {
-                                                  0: FlexColumnWidth(
-                                                      0.3), // Width of label column
-                                                  1: FlexColumnWidth(
-                                                      0.5), // Width of text field column
-                                                },
-                                                children: [
-                                                  TableRow(children: [
-                                                    TableCell(
-                                                      child: Padding(
-                                                        padding:
-                                                            EdgeInsets.all(8.0),
-                                                        child: Text("牙技所狀態"),
-                                                      ),
-                                                    ),
-                                                    TableCell(
-                                                        child: Container(
-                                                      margin: EdgeInsets.only(
-                                                          bottom: 0),
-                                                      child: Wrap(
-                                                        spacing: 12,
-                                                        runSpacing: 6,
-                                                        children: [
-                                                          Row(
-                                                            mainAxisSize:
-                                                                MainAxisSize.min,
-                                                            children: [
-                                                              Radio(
-                                                                  value:
-                                                                      DentalStatus
-                                                                          .contact,
-                                                                  groupValue:
-                                                                      _dentalStatus,
-                                                                  onChanged:
-                                                                      (DentalStatus?
-                                                                          value) {
-                                                                    setState(() {
-                                                                      _dentalStatus =
-                                                                          value;
-                                                                    });
-                                                                  }),
-                                                              Text("聯繫中"),
-                                                            ],
-                                                          ),
-                                                          Row(
-                                                            mainAxisSize:
-                                                                MainAxisSize.min,
-                                                            children: [
-                                                              Radio(
-                                                                  value: DentalStatus
-                                                                      .underContact,
-                                                                  groupValue:
-                                                                      _dentalStatus,
-                                                                  onChanged:
-                                                                      (DentalStatus?
-                                                                          value) {
-                                                                    setState(() {
-                                                                      _dentalStatus =
-                                                                          value;
-                                                                    });
-                                                                  }),
-                                                              Text("合約中"),
-                                                            ],
-                                                          ),
-                                                          Row(
-                                                            mainAxisSize:
-                                                                MainAxisSize.min,
-                                                            children: [
-                                                              Radio(
-                                                                  value: DentalStatus
-                                                                      .terminated,
-                                                                  groupValue:
-                                                                      _dentalStatus,
-                                                                  onChanged:
-                                                                      (DentalStatus?
-                                                                          value) {
-                                                                    setState(() {
-                                                                      _dentalStatus =
-                                                                          value;
-                                                                    });
-                                                                  }),
-                                                              Text("已解約"),
-                                                            ],
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ))
-                                                  ]),
-                                                  TableRow(children: [
-                                                    TableCell(
-                                                        child: Padding(
-                                                      padding: EdgeInsets.all(8),
-                                                      child: Text("牙技所統一編號"),
-                                                    )),
-                                                    TableCell(
-                                                        child: Container(
-                                                      height: 32,
-                                                      margin: EdgeInsets.symmetric(
-                                                          vertical: 6),
-                                                      child: TextFormField(
-                                                        decoration: InputDecoration(
-                                                            contentPadding:
-                                                                EdgeInsets.only(
-                                                                    left: 10),
-                                                            enabledBorder:
-                                                                OutlineInputBorder(
-                                                                    borderSide: BorderSide(
-                                                                        width: 2,
-                                                                        color: Colors
-                                                                            .grey))),
-                                                      ),
-                                                    )),
-                                                  ]),
-                                                  TableRow(children: [
-                                                    TableCell(
-                                                        child: Padding(
-                                                      padding: EdgeInsets.all(8),
-                                                      child: Text("備註"),
-                                                    )),
-                                                    TableCell(
-                                                        child: Container(
-                                                      height: 150,
-                                                      margin: EdgeInsets.symmetric(
-                                                          vertical: 6),
-                                                      child: TextFormField(
-                                                        keyboardType:
-                                                            TextInputType.multiline,
-                                                        maxLines: null,
-                                                        expands: true,
-                                                        decoration: InputDecoration(
-                                                            contentPadding:
-                                                                EdgeInsets.only(
-                                                                    left: 10),
-                                                            enabledBorder:
-                                                                OutlineInputBorder(
-                                                                    borderSide: BorderSide(
-                                                                        width: 2,
-                                                                        color: Colors
-                                                                            .grey))),
-                                                      ),
-                                                    ))
-                                                  ])
-                                                ],
-                                              ),
-                                            ))
-                                      ],
-                                    ),
-                                  )
+                                  getCurrentForm()
                                 ],
                               ),
                             ),

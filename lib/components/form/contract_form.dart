@@ -1,24 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:namer_app/components/custom_text_form_field_date.dart';
+import 'package:namer_app/my_app_state.dart';
+import 'package:provider/provider.dart';
 
-enum PaymentMethods {
-  month,
-  season,
-  year,
-}
-
-class ContractForm extends StatefulWidget {
+class ContractForm extends StatelessWidget {
   const ContractForm({super.key});
 
   @override
-  State<ContractForm> createState() => _ContractFormState();
-}
-
-class _ContractFormState extends State<ContractForm> {
-  PaymentMethods? _paymentMethods = PaymentMethods.season;
-
-  @override
   Widget build(BuildContext context) {
+    MyAppState appState = context.watch<MyAppState>();
+    String? paymentMethods = appState.contractForm["合約收費方案"];
+
     return Form(
         child: Row(
             mainAxisSize: MainAxisSize.max,
@@ -59,7 +51,7 @@ class _ContractFormState extends State<ContractForm> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text("服務平台合約"),
+                      child: Text(appState.contractForm["合約種類"] ?? "服務平台合約"),
                     ),
                   ]),
                   TableRow(children: [
@@ -71,6 +63,10 @@ class _ContractFormState extends State<ContractForm> {
                       child: SizedBox(
                         height: 32,
                         child: TextFormField(
+                          initialValue: appState.contractForm["合約編號"],
+                          onChanged: (value) {
+                            appState.setContractForm(key: "合約編號", value: value);
+                          },
                           decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(left: 10),
                               enabledBorder: OutlineInputBorder(
@@ -89,7 +85,12 @@ class _ContractFormState extends State<ContractForm> {
                       child: SizedBox(
                         height: 32,
                         child: TextFormField(
+                          initialValue: appState.contractForm['合約名稱'],
+                          onChanged: (value) {
+                            appState.setContractForm(key: "合約名稱", value: value);
+                          },
                           decoration: InputDecoration(
+                            hintText: "e.g. XX牙技所服務平台合約",
                               contentPadding: EdgeInsets.only(left: 10),
                               enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
@@ -109,8 +110,12 @@ class _ContractFormState extends State<ContractForm> {
                             height: 32,
                             width: 180,
                             child: CustomTextFormFieldDate(
-                              onSelect: (String value) {
-                                print("You select date $value");
+                              key: UniqueKey(),
+                              initialDate: appState.contractForm["合約起始日"],
+                              onSelect: (String? value) {
+                                // print("You select date $value");
+                                appState.setContractForm(
+                                    key: "合約起始日", value: value ?? "");
                               },
                             )),
                       ],
@@ -127,8 +132,12 @@ class _ContractFormState extends State<ContractForm> {
                             height: 32,
                             width: 180,
                             child: CustomTextFormFieldDate(
-                              onSelect: (String value) {
-                                print("You select date $value");
+                              key: UniqueKey(),
+                              initialDate: appState.contractForm["合約到期日"],
+                              onSelect: (String? value) {
+                                // print("You select date $value");
+                                appState.setContractForm(
+                                    key: "合約到期日", value: value ?? "");
                               },
                             )),
                       ],
@@ -145,8 +154,11 @@ class _ContractFormState extends State<ContractForm> {
                             height: 32,
                             width: 180,
                             child: CustomTextFormFieldDate(
-                              onSelect: (String value) {
-                                print("You select date $value");
+                              initialDate: appState.contractForm["合約建立日"],
+                              onSelect: (String? value) {
+                                // print("You select date $value");
+                                appState.setContractForm(
+                                    key: "合約建立日", value: value ?? "");
                               },
                             )),
                       ],
@@ -178,12 +190,11 @@ class _ContractFormState extends State<ContractForm> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Radio(
-                                value: PaymentMethods.month,
-                                groupValue: _paymentMethods,
-                                onChanged: (PaymentMethods? value) {
-                                  setState(() {
-                                    _paymentMethods = value;
-                                  });
+                                value: "month",
+                                groupValue: paymentMethods,
+                                onChanged: (String? value) {
+                                  appState.setContractForm(
+                                      key: "合約收費方案", value: value ?? "season");
                                 }),
                             Text("月繳"),
                           ],
@@ -192,12 +203,11 @@ class _ContractFormState extends State<ContractForm> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Radio(
-                                value: PaymentMethods.season,
-                                groupValue: _paymentMethods,
-                                onChanged: (PaymentMethods? value) {
-                                  setState(() {
-                                    _paymentMethods = value;
-                                  });
+                                value: "season",
+                                groupValue: paymentMethods,
+                                onChanged: (String? value) {
+                                  appState.setContractForm(
+                                      key: "合約收費方案", value: value ?? "season");
                                 }),
                             Text("季繳"),
                           ],
@@ -206,12 +216,11 @@ class _ContractFormState extends State<ContractForm> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Radio(
-                                value: PaymentMethods.year,
-                                groupValue: _paymentMethods,
-                                onChanged: (PaymentMethods? value) {
-                                  setState(() {
-                                    _paymentMethods = value;
-                                  });
+                                value: "year",
+                                groupValue: paymentMethods,
+                                onChanged: (String? value) {
+                                  appState.setContractForm(
+                                      key: "合約收費方案", value: value ?? "season");
                                 }),
                             Text("年繳"),
                           ],
@@ -228,8 +237,10 @@ class _ContractFormState extends State<ContractForm> {
                             height: 32,
                             width: 180,
                             child: CustomTextFormFieldDate(
-                              onSelect: (String value) {
-                                print("You select date $value");
+                              initialDate: appState.contractForm["下次收費日期"],
+                              onSelect: (String? value) {
+                                // print("You select date $value");
+                                appState.setContractForm(key: "下次收費日期", value: value ?? "");
                               },
                             )),
                       ],
@@ -254,6 +265,10 @@ class _ContractFormState extends State<ContractForm> {
                         child: SizedBox(
                           height: 150,
                           child: TextFormField(
+                            initialValue: appState.contractForm["合約註記"],
+                            onChanged: (value) {
+                              appState.setContractForm(key: "合約註記", value: value);
+                            },
                             keyboardType: TextInputType.multiline,
                             maxLines: null,
                             expands: true,
