@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:namer_app/components/custom/custom_page_title.dart';
 import 'package:namer_app/components/form/contract_form.dart';
 import 'package:namer_app/components/form/dental_form.dart';
 import 'package:namer_app/components/form/summarize_form.dart';
@@ -21,17 +22,49 @@ class _OrderPageState extends State<OrderPage> {
         return DentalForm();
       case 2:
         return ContractForm();
-      case 3: 
+      case 3:
         return SummarizeForm();
       default:
         return Container();
     }
   }
 
+  Widget multiStepTextButton({required int step, required String title}) {
+    return TextButton(
+        onPressed: () {
+          setState(() {
+            currentFormStep = step;
+          });
+        },
+        child: Row(
+          children: [
+            Container(
+              width: 25,
+              height: 25,
+              decoration: BoxDecoration(
+                  border: Border.all(width: 2, color: getActiveColor(step)),
+                  borderRadius: BorderRadius.circular(1000)),
+              child: Center(
+                child: Text(
+                  step.toString(),
+                  style: TextStyle(color: getActiveColor(step)),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: Text(
+                title,
+                style: TextStyle(color: getActiveColor(step)),
+              ),
+            )
+          ],
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     // MyAppState appState = context.watch<MyAppState>();
-    //Color activeColor =
 
     return SizedBox.expand(
       child: SingleChildScrollView(
@@ -43,34 +76,17 @@ class _OrderPageState extends State<OrderPage> {
                   constraints: BoxConstraints(maxWidth: 1000),
                   child: Column(
                     children: [
-                      Container(
-                        color: Colors.white,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 4),
-                          child: Row(
-                            children: [
-                              Icon(Icons.add),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8.0),
-                                child: Text(
-                                  "合約管理/新增合約",
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                              ),
-                              Spacer(),
-                              TextButton(
-                                  onPressed: () {},
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.arrow_back_ios),
-                                      Text("上一頁"),
-                                    ],
-                                  ))
-                            ],
-                          ),
-                        ),
-                      ),
+                      CustomPageTitle(
+                          pageTitle: "合約管理/新增合約",
+                          pageTitleIconData: Icons.add,
+                          tailling: TextButton(
+                              onPressed: () {},
+                              child: Row(
+                                children: [
+                                  Icon(Icons.arrow_back_ios),
+                                  Text("上一頁"),
+                                ],
+                              ))),
                       SizedBox(
                         height: 16,
                       ),
@@ -80,127 +96,19 @@ class _OrderPageState extends State<OrderPage> {
                           flex: 5,
                           child: Row(
                             children: [
-                              TextButton(
-                                onPressed: () {
-                                  setState(() {
-                                    currentFormStep = 1;
-                                  });
-                                },
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 25,
-                                      height: 25,
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              width: 2,
-                                              color: getActiveColor(1)),
-                                          borderRadius:
-                                              BorderRadius.circular(1000)),
-                                      child: Center(
-                                        child: Text(
-                                          "1",
-                                          style: TextStyle(
-                                              color: getActiveColor(1)),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 4),
-                                      child: Text(
-                                        "牙技所資料設定",
-                                        style: TextStyle(
-                                            color: getActiveColor(1)),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
+                              multiStepTextButton(step: 1, title: "牙技所資料設定"),
                               Expanded(
                                   child: Container(
                                 height: 2,
                                 color: Colors.grey,
                               )),
-                              TextButton(
-                                onPressed: () {
-                                  setState(() {
-                                    currentFormStep = 2;
-                                  });
-                                },
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 25,
-                                      height: 25,
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              width: 2,
-                                              color: getActiveColor(2)),
-                                          borderRadius:
-                                              BorderRadius.circular(1000)),
-                                      child: Center(
-                                        child: Text(
-                                          "2",
-                                          style: TextStyle(
-                                              color: getActiveColor(2)),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 4),
-                                      child: Text(
-                                        "合約資料設定",
-                                        style: TextStyle(
-                                            color: getActiveColor(2)),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
+                              multiStepTextButton(step: 2, title: "合約資料設定"),
                               Expanded(
                                   child: Container(
                                 height: 2,
                                 color: Colors.grey,
                               )),
-                              TextButton(
-                                onPressed: () {
-                                  setState(() {
-                                    currentFormStep = 3;
-                                  });
-                                },
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 25,
-                                      height: 25,
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              width: 2,
-                                              color: getActiveColor(3)),
-                                          borderRadius:
-                                              BorderRadius.circular(1000)),
-                                      child: Center(
-                                        child: Text(
-                                          "3",
-                                          style: TextStyle(
-                                              color: getActiveColor(3)),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 4),
-                                      child: Text(
-                                        "合約內容確認",
-                                        style: TextStyle(
-                                            color: getActiveColor(3)),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
+                              multiStepTextButton(step: 3, title: "合約內容確認"),
                             ],
                           ),
                         ),
@@ -217,8 +125,8 @@ class _OrderPageState extends State<OrderPage> {
                       Container(
                         color: Colors.white,
                         child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 8),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 24, vertical: 8),
                           child: Column(
                             children: [
                               Row(

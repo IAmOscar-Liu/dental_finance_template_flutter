@@ -17,3 +17,17 @@ enum ContractDisplay {
   equipmentSale,
 
 }
+
+class TableRowData {
+  const TableRowData({required this.isHeaderOrFooter, required this.rowData});
+
+  final bool isHeaderOrFooter;
+  final List<String >rowData;
+}
+
+class TableData {
+  const TableData({required this.tableTitle, required this.rowData});
+
+  final String tableTitle;
+  final List<TableRowData> rowData;
+}

@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:namer_app/components/custom/custom_app_bar_title.dart';
+import 'package:namer_app/components/custom/custom_app_bar.dart';
 import 'package:namer_app/components/custom/custom_sidebar.dart';
 
-double sidebarWidth = 250;
-double minScreenWidth = 1050;
-
 class CustomPage extends StatelessWidget {
-  const CustomPage({super.key, required this.page});
+  const CustomPage(
+      {super.key,
+      this.sidebarWidth = 250,
+      this.minScreenWidth = 1050,
+      required this.page});
 
+  final double sidebarWidth;
+  final double minScreenWidth;
   final Widget page;
 
   @override
@@ -15,16 +18,12 @@ class CustomPage extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      appBar: AppBar(
-        titleSpacing: 0,
-        centerTitle: false,
-        automaticallyImplyLeading: false,
-        toolbarHeight: 66,
-        title: CustomAppBarTitle(sidebarWidth: sidebarWidth,),
-      ),
+      appBar: CustomAppBar(sidebarWidth: sidebarWidth),
       body: Row(
         children: [
-          CustomSidebar(sidebarWidth: sidebarWidth,),
+          CustomSidebar(
+            sidebarWidth: sidebarWidth,
+          ),
           Expanded(
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,

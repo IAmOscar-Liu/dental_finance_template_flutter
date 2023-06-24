@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:namer_app/components/custom/custom_page_title.dart';
 import 'package:namer_app/types.dart';
 
 List<String> dummyTableKeys = [
@@ -57,7 +58,7 @@ class ManagementPage extends StatefulWidget {
 }
 
 class _ManagementPageState extends State<ManagementPage> {
-  ContractDisplay _contractDisplay = ContractDisplay.all;
+  dynamic _contractDisplay = ContractDisplay.all;
   List<Map<String, String>> _filteredTableData = dummyTableData;
   Map<dynamic, List<Map<String, String>>> _lookupTable = {
     ContractDisplay.all: dummyTableData
@@ -120,31 +121,13 @@ class _ManagementPageState extends State<ManagementPage> {
       child: SingleChildScrollView(
         child: Center(
           child: Padding(
-            padding:
-                EdgeInsets.only(left: 24, top: 24, right: 24, bottom: 36),
+            padding: EdgeInsets.only(left: 24, top: 24, right: 24, bottom: 36),
             child: ConstrainedBox(
               constraints: BoxConstraints(maxWidth: 1000),
               child: Column(
                 children: [
-                  Container(
-                    color: Colors.white,
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                      child: Row(
-                        children: [
-                          Icon(Icons.dvr),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Text(
-                              "合約管理",
-                              style: TextStyle(fontSize: 18),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  CustomPageTitle(
+                      pageTitle: "合約管理", pageTitleIconData: Icons.dvr),
                   SizedBox(
                     height: 16,
                   ),
@@ -176,18 +159,15 @@ class _ManagementPageState extends State<ManagementPage> {
                         padding: const EdgeInsets.only(right: 10.0),
                         child: FilledButton(
                             style: filledButtonStyle,
-                            onPressed:
-                                ContractDisplay.all == _contractDisplay
-                                    ? null
-                                    : () {
-                                        setState(() {
-                                          _contractDisplay =
-                                              ContractDisplay.all;
-                                          _filteredTableData =
-                                              getFilteredTableData(
-                                                  ContractDisplay.all);
-                                        });
-                                      },
+                            onPressed: ContractDisplay.all == _contractDisplay
+                                ? null
+                                : () {
+                                    setState(() {
+                                      _contractDisplay = ContractDisplay.all;
+                                      _filteredTableData = getFilteredTableData(
+                                          ContractDisplay.all);
+                                    });
+                                  },
                             child: Text(
                                 "全部(${getFilteredTableData(ContractDisplay.all).length})")),
                       ),
@@ -195,18 +175,17 @@ class _ManagementPageState extends State<ManagementPage> {
                         padding: const EdgeInsets.only(right: 10.0),
                         child: FilledButton(
                             style: filledButtonStyle,
-                            onPressed:
-                                ContractDisplay.service == _contractDisplay
-                                    ? null
-                                    : () {
-                                        setState(() {
-                                          _contractDisplay =
-                                              ContractDisplay.service;
-                                          _filteredTableData =
-                                              getFilteredTableData(
-                                                  ContractDisplay.service);
-                                        });
-                                      },
+                            onPressed: ContractDisplay.service ==
+                                    _contractDisplay
+                                ? null
+                                : () {
+                                    setState(() {
+                                      _contractDisplay =
+                                          ContractDisplay.service;
+                                      _filteredTableData = getFilteredTableData(
+                                          ContractDisplay.service);
+                                    });
+                                  },
                             child: Text(
                                 "服務平台(${getFilteredTableData(ContractDisplay.service).length})")),
                       ),
@@ -221,10 +200,8 @@ class _ManagementPageState extends State<ManagementPage> {
                                     setState(() {
                                       _contractDisplay =
                                           ContractDisplay.equipmentRental;
-                                      _filteredTableData =
-                                          getFilteredTableData(
-                                              ContractDisplay
-                                                  .equipmentRental);
+                                      _filteredTableData = getFilteredTableData(
+                                          ContractDisplay.equipmentRental);
                                     });
                                   },
                             child: Text(
@@ -241,10 +218,8 @@ class _ManagementPageState extends State<ManagementPage> {
                                     setState(() {
                                       _contractDisplay =
                                           ContractDisplay.equipmentSale;
-                                      _filteredTableData =
-                                          getFilteredTableData(
-                                              ContractDisplay
-                                                  .equipmentSale);
+                                      _filteredTableData = getFilteredTableData(
+                                          ContractDisplay.equipmentSale);
                                     });
                                   },
                             child: Text(
@@ -258,8 +233,7 @@ class _ManagementPageState extends State<ManagementPage> {
                     height: 8,
                   ),
                   Table(
-                    defaultVerticalAlignment:
-                        TableCellVerticalAlignment.middle,
+                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                     columnWidths: {
                       0: FlexColumnWidth(1),
                       1: FlexColumnWidth(1.5),
