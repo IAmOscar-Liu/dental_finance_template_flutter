@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:namer_app/components/custom_app_bar_title.dart';
-import 'package:namer_app/components/custom_sidebar.dart';
+import 'package:namer_app/components/custom/custom_app_bar_title.dart';
+import 'package:namer_app/components/custom/custom_sidebar.dart';
 
 double sidebarWidth = 250;
 double minScreenWidth = 1050;

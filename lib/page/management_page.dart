@@ -71,16 +71,13 @@ class _ManagementPageState extends State<ManagementPage> {
     if (_lookupTable.containsKey(filter)) return _lookupTable[filter] ?? [];
 
     final List<Map<String, String>> results = dummyTableData.where((element) {
-      if (filter == ContractDisplay.all) return true;
-      if (filter == ContractDisplay.service && element["合約種類"] == "服務平台") {
-        return true;
-      }
-      if (filter == ContractDisplay.equipmentRental &&
-          element["合約種類"] == "設備租賃") return true;
-      if (filter == ContractDisplay.equipmentSale &&
-          element["合約種類"] == "設備買賣") {
-        return true;
-      }
+      if (filter == ContractDisplay.all ||
+          (filter == ContractDisplay.service && element["合約種類"] == "服務平台") ||
+          (filter == ContractDisplay.equipmentRental &&
+              element["合約種類"] == "設備租賃") ||
+          (filter == ContractDisplay.equipmentSale &&
+              element["合約種類"] == "設備買賣")) return true;
+
       return false;
     }).toList();
 
@@ -119,175 +116,169 @@ class _ManagementPageState extends State<ManagementPage> {
               .toList(),
         )));
 
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Expanded(
-          child: SingleChildScrollView(
-            child: Center(
-              child: Padding(
-                padding:
-                    EdgeInsets.only(left: 24, top: 24, right: 24, bottom: 36),
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(maxWidth: 1000),
-                  child: Column(
-                    children: [
-                      Container(
-                        color: Colors.white,
-                        child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                          child: Row(
-                            children: [
-                              Icon(Icons.dvr),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8.0),
-                                child: Text(
-                                  "合約管理",
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Row(children: [
-                        Text(
-                          "合約總覽",
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        Spacer(),
-                        Container(
-                          color: Colors.white,
-                          width: 250,
-                          height: 30,
-                          child: TextField(
-                            decoration: InputDecoration(
-                              labelText: '查詢合約',
-                              prefixIcon: Icon(Icons.search),
-                              border: OutlineInputBorder(),
+    return SizedBox.expand(
+      child: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding:
+                EdgeInsets.only(left: 24, top: 24, right: 24, bottom: 36),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: 1000),
+              child: Column(
+                children: [
+                  Container(
+                    color: Colors.white,
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                      child: Row(
+                        children: [
+                          Icon(Icons.dvr),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text(
+                              "合約管理",
+                              style: TextStyle(fontSize: 18),
                             ),
                           ),
-                        ),
-                      ]),
-                      SizedBox(
-                        height: 12,
-                      ),
-                      Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10.0),
-                            child: FilledButton(
-                                style: filledButtonStyle,
-                                onPressed:
-                                    ContractDisplay.all == _contractDisplay
-                                        ? null
-                                        : () {
-                                            setState(() {
-                                              _contractDisplay =
-                                                  ContractDisplay.all;
-                                              _filteredTableData =
-                                                  getFilteredTableData(
-                                                      ContractDisplay.all);
-                                            });
-                                          },
-                                child: Text(
-                                    "全部(${getFilteredTableData(ContractDisplay.all).length})")),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10.0),
-                            child: FilledButton(
-                                style: filledButtonStyle,
-                                onPressed:
-                                    ContractDisplay.service == _contractDisplay
-                                        ? null
-                                        : () {
-                                            setState(() {
-                                              _contractDisplay =
-                                                  ContractDisplay.service;
-                                              _filteredTableData =
-                                                  getFilteredTableData(
-                                                      ContractDisplay.service);
-                                            });
-                                          },
-                                child: Text(
-                                    "服務平台(${getFilteredTableData(ContractDisplay.service).length})")),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10.0),
-                            child: FilledButton(
-                                style: filledButtonStyle,
-                                onPressed: ContractDisplay.equipmentRental ==
-                                        _contractDisplay
-                                    ? null
-                                    : () {
-                                        setState(() {
-                                          _contractDisplay =
-                                              ContractDisplay.equipmentRental;
-                                          _filteredTableData =
-                                              getFilteredTableData(
-                                                  ContractDisplay
-                                                      .equipmentRental);
-                                        });
-                                      },
-                                child: Text(
-                                    "設備租賃(${getFilteredTableData(ContractDisplay.equipmentRental).length})")),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10.0),
-                            child: FilledButton(
-                                style: filledButtonStyle,
-                                onPressed: ContractDisplay.equipmentSale ==
-                                        _contractDisplay
-                                    ? null
-                                    : () {
-                                        setState(() {
-                                          _contractDisplay =
-                                              ContractDisplay.equipmentSale;
-                                          _filteredTableData =
-                                              getFilteredTableData(
-                                                  ContractDisplay
-                                                      .equipmentSale);
-                                        });
-                                      },
-                                child: Text(
-                                    "設備買賣(${getFilteredTableData(ContractDisplay.equipmentSale).length})")),
-                          ),
-                          Spacer(),
-                          FilledButton(onPressed: () {}, child: Text("新增合約")),
                         ],
                       ),
-                      SizedBox(
-                        height: 8,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Row(children: [
+                    Text(
+                      "合約總覽",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    Spacer(),
+                    Container(
+                      color: Colors.white,
+                      width: 250,
+                      height: 30,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          labelText: '查詢合約',
+                          prefixIcon: Icon(Icons.search),
+                          border: OutlineInputBorder(),
+                        ),
                       ),
-                      Table(
-                        defaultVerticalAlignment:
-                            TableCellVerticalAlignment.middle,
-                        columnWidths: {
-                          0: FlexColumnWidth(1),
-                          1: FlexColumnWidth(1.5),
-                          2: FlexColumnWidth(2),
-                          3: FlexColumnWidth(1),
-                          4: FlexColumnWidth(2),
-                          5: FlexColumnWidth(1),
-                          6: FlexColumnWidth(1),
-                          7: FlexColumnWidth(1.2),
-                          8: FlexColumnWidth(1.2),
-                        },
-                        children: tableRows,
-                      )
+                    ),
+                  ]),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10.0),
+                        child: FilledButton(
+                            style: filledButtonStyle,
+                            onPressed:
+                                ContractDisplay.all == _contractDisplay
+                                    ? null
+                                    : () {
+                                        setState(() {
+                                          _contractDisplay =
+                                              ContractDisplay.all;
+                                          _filteredTableData =
+                                              getFilteredTableData(
+                                                  ContractDisplay.all);
+                                        });
+                                      },
+                            child: Text(
+                                "全部(${getFilteredTableData(ContractDisplay.all).length})")),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10.0),
+                        child: FilledButton(
+                            style: filledButtonStyle,
+                            onPressed:
+                                ContractDisplay.service == _contractDisplay
+                                    ? null
+                                    : () {
+                                        setState(() {
+                                          _contractDisplay =
+                                              ContractDisplay.service;
+                                          _filteredTableData =
+                                              getFilteredTableData(
+                                                  ContractDisplay.service);
+                                        });
+                                      },
+                            child: Text(
+                                "服務平台(${getFilteredTableData(ContractDisplay.service).length})")),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10.0),
+                        child: FilledButton(
+                            style: filledButtonStyle,
+                            onPressed: ContractDisplay.equipmentRental ==
+                                    _contractDisplay
+                                ? null
+                                : () {
+                                    setState(() {
+                                      _contractDisplay =
+                                          ContractDisplay.equipmentRental;
+                                      _filteredTableData =
+                                          getFilteredTableData(
+                                              ContractDisplay
+                                                  .equipmentRental);
+                                    });
+                                  },
+                            child: Text(
+                                "設備租賃(${getFilteredTableData(ContractDisplay.equipmentRental).length})")),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10.0),
+                        child: FilledButton(
+                            style: filledButtonStyle,
+                            onPressed: ContractDisplay.equipmentSale ==
+                                    _contractDisplay
+                                ? null
+                                : () {
+                                    setState(() {
+                                      _contractDisplay =
+                                          ContractDisplay.equipmentSale;
+                                      _filteredTableData =
+                                          getFilteredTableData(
+                                              ContractDisplay
+                                                  .equipmentSale);
+                                    });
+                                  },
+                            child: Text(
+                                "設備買賣(${getFilteredTableData(ContractDisplay.equipmentSale).length})")),
+                      ),
+                      Spacer(),
+                      FilledButton(onPressed: () {}, child: Text("新增合約")),
                     ],
                   ),
-                ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Table(
+                    defaultVerticalAlignment:
+                        TableCellVerticalAlignment.middle,
+                    columnWidths: {
+                      0: FlexColumnWidth(1),
+                      1: FlexColumnWidth(1.5),
+                      2: FlexColumnWidth(2),
+                      3: FlexColumnWidth(1),
+                      4: FlexColumnWidth(2),
+                      5: FlexColumnWidth(1),
+                      6: FlexColumnWidth(1),
+                      7: FlexColumnWidth(1.2),
+                      8: FlexColumnWidth(1.2),
+                    },
+                    children: tableRows,
+                  )
+                ],
               ),
             ),
           ),
-        )
-      ],
+        ),
+      ),
     );
   }
 }
