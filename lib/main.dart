@@ -11,23 +11,23 @@ import 'package:provider/provider.dart';
 
 // flutter run -d chrome --web-renderer html
 
-final Map<String, Widget> myRoutes = {
-  "/": CustomPage(page: HomePage()),
-  '/favorites': CustomPage(page: FavoritePage()),
-  '/finance': CustomPage(page: FinancePage()),
-  "/management": CustomPage(page: ManagementPage()),
-  '/management/new': CustomPage(page: OrderPage()),
-};
-
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
+
+final Map<String, Widget> myRoutes = {
+  "/": HomePage(),
+  '/favorites': FavoritePage(),
+  '/finance': FinancePage(),
+  "/management": ManagementPage(),
+  '/management/new': OrderPage(),
+};
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   Widget getPage(String? pathname) {
-    return myRoutes[pathname] ?? CustomPage(page: NotFoundPage());
+    return CustomPage(page: myRoutes[pathname] ?? NotFoundPage());
   }
 
   @override
