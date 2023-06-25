@@ -73,76 +73,92 @@ class _FinancePageState extends State<FinancePage> {
                   SizedBox(
                     height: 12,
                   ),
-                  CustomTableGroup(
-                    tableData: TableData(
-                      tableTitle: "幣別: TWD",
-                      rowData: [
-                        TableRowData(
-                            isHeaderOrFooter: true, rowData: ["訂單編號", "交易金額"]),
+                  Column(
+                    children: [
+                      CustomTableGroup(
+                        tableData: TableData(
+                          tableTitle: "幣別: TWD",
+                          rowData: [
+                            TableRowData(
+                                isHeaderOrFooter: true,
+                                rowData: ["訂單編號", "交易金額"]),
+                            TableRowData(
+                                isHeaderOrFooter: false,
+                                rowData: ["S202301010001", "10,000"]),
+                            TableRowData(
+                                isHeaderOrFooter: false,
+                                rowData: ["S202301010002", "20,000"]),
+                            TableRowData(
+                                isHeaderOrFooter: true,
+                                rowData: ["小計", "30,000"]),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 12,
+                      ),
+                      CustomTableGroup(
+                          tableData: TableData(
+                        tableTitle: "幣別: USD",
+                        rowData: [
+                          TableRowData(
+                              isHeaderOrFooter: true,
+                              rowData: ["訂單編號", "交易金額"]),
+                          TableRowData(
+                              isHeaderOrFooter: false,
+                              rowData: ["S202301010003", "1,000"]),
+                          TableRowData(
+                              isHeaderOrFooter: true, rowData: ["小計", "1,000"]),
+                        ],
+                      )),
+                      SizedBox(
+                        height: 12,
+                      ),
+                      CustomTableGroup(
+                        tableData: TableData(tableTitle: "交易金額換算", rowData: [
+                          TableRowData(isHeaderOrFooter: true, rowData: [
+                            "交易幣別",
+                            "交易金額",
+                            "預設匯率(TWD)",
+                            "換算金額(TWD)"
+                          ]),
+                          TableRowData(
+                              isHeaderOrFooter: false,
+                              rowData: ["TWD", "30,000", "1", "30,000"]),
+                          TableRowData(
+                              isHeaderOrFooter: false,
+                              rowData: ["USD", "1,000", "30", "30,000"]),
+                        ]),
+                      ),
+                      SizedBox(
+                        height: 12,
+                      ),
+                      CustomTableGroup(
+                          tableData:
+                              TableData(tableTitle: "服務費(TWD)", rowData: [
                         TableRowData(
                             isHeaderOrFooter: false,
-                            rowData: ["S202301010001", "10,000"]),
+                            rowData: ["基本費", "25,000"]),
                         TableRowData(
                             isHeaderOrFooter: false,
-                            rowData: ["S202301010002", "20,000"]),
+                            rowData: ["交易金額", "60,000"]),
                         TableRowData(
-                            isHeaderOrFooter: true, rowData: ["小計", "30,000"]),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 12,
-                  ),
-                  CustomTableGroup(
-                      tableData: TableData(
-                    tableTitle: "幣別: USD",
-                    rowData: [
-                      TableRowData(
-                          isHeaderOrFooter: true, rowData: ["訂單編號", "交易金額"]),
-                      TableRowData(
-                          isHeaderOrFooter: false,
-                          rowData: ["S202301010003", "1,000"]),
-                      TableRowData(
-                          isHeaderOrFooter: true, rowData: ["小計", "1,000"]),
+                            isHeaderOrFooter: false,
+                            rowData: ["免費額度", "50,000"]),
+                        TableRowData(
+                            isHeaderOrFooter: false,
+                            rowData: ["交易金額", "60,000"]),
+                        TableRowData(
+                            isHeaderOrFooter: false,
+                            rowData: ["超額金額", "10,000"]),
+                        TableRowData(
+                            isHeaderOrFooter: false,
+                            rowData: ["超額服務費(10%)", "1,000"]),
+                        TableRowData(
+                            isHeaderOrFooter: true, rowData: ["總計", "26,000"]),
+                      ])),
                     ],
-                  )),
-                  SizedBox(
-                    height: 12,
                   ),
-                  CustomTableGroup(
-                    tableData: TableData(tableTitle: "交易金額換算", rowData: [
-                      TableRowData(
-                          isHeaderOrFooter: true,
-                          rowData: ["交易幣別", "交易金額", "預設匯率(TWD)", "換算金額(TWD)"]),
-                      TableRowData(
-                          isHeaderOrFooter: false,
-                          rowData: ["TWD", "30,000", "1", "30,000"]),
-                      TableRowData(
-                          isHeaderOrFooter: false,
-                          rowData: ["USD", "1,000", "30", "30,000"]),
-                    ]),
-                  ),
-                  SizedBox(
-                    height: 12,
-                  ),
-                  CustomTableGroup(
-                      tableData: TableData(tableTitle: "服務費(TWD)", rowData: [
-                    TableRowData(
-                        isHeaderOrFooter: false, rowData: ["基本費", "25,000"]),
-                    TableRowData(
-                        isHeaderOrFooter: false, rowData: ["交易金額", "60,000"]),
-                    TableRowData(
-                        isHeaderOrFooter: false, rowData: ["免費額度", "50,000"]),
-                    TableRowData(
-                        isHeaderOrFooter: false, rowData: ["交易金額", "60,000"]),
-                    TableRowData(
-                        isHeaderOrFooter: false, rowData: ["超額金額", "10,000"]),
-                    TableRowData(
-                        isHeaderOrFooter: false,
-                        rowData: ["超額服務費(10%)", "1,000"]),
-                    TableRowData(
-                        isHeaderOrFooter: true, rowData: ["總計", "26,000"]),
-                  ])),
                 ],
               ),
             ),

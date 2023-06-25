@@ -155,6 +155,7 @@ class ContractForm extends StatelessWidget {
                             height: 32,
                             width: 180,
                             child: CustomTextFormFieldDate(
+                              key: UniqueKey(),
                               initialDate: appState.contractForm["合約建立日"],
                               onSelect: (String? value) {
                                 // print("You select date $value");
@@ -200,6 +201,7 @@ class ContractForm extends StatelessWidget {
                             height: 32,
                             width: 180,
                             child: CustomTextFormFieldDate(
+                              key: UniqueKey(),
                               initialDate: appState.contractForm["下次收費日期"],
                               onSelect: (String? value) {
                                 // print("You select date $value");

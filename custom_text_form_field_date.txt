@@ -1,17 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class CustomTextFormFieldDate extends StatelessWidget {
-  const CustomTextFormFieldDate(
-      {super.key, this.initialDate = "", required this.onSelect});
+class CustomTextFormFieldDate extends StatefulWidget {
+  const CustomTextFormFieldDate({super.key, this.initialDate = "", required this.onSelect});
 
-  final String? initialDate;
+  final String? initialDate; 
   final Function onSelect;
+
+  @override
+  State<CustomTextFormFieldDate> createState() =>
+      _CustomTextFormFieldDateState();
+}
+
+class _CustomTextFormFieldDateState extends State<CustomTextFormFieldDate> {
+  TextEditingController dateinput = TextEditingController();
+  //text editing controller for text field
+
+  @override
+  void initState() {
+    dateinput.text = widget.initialDate ?? ""; //set the initial value of text field
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      initialValue: initialDate,
+      controller: dateinput, //editing controller of this TextField
       decoration: InputDecoration(
           icon: Icon(Icons.calendar_month), //icon of text field
           hintText: "yyyy-MM-dd",
@@ -29,7 +43,11 @@ class CustomTextFormFieldDate extends StatelessWidget {
 
         if (pickedDate != null) {
           String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-          onSelect(formattedDate);
+          widget.onSelect(formattedDate);
+          setState(() {
+            dateinput.text =
+                formattedDate; //set output date to TextField value.
+          });
         }
       },
     );
