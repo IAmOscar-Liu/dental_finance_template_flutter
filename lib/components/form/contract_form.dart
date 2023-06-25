@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:namer_app/components/custom/custom_radio_group.dart';
 import 'package:namer_app/components/custom/custom_text_form_field_date.dart';
 import 'package:namer_app/my_app_state.dart';
 import 'package:provider/provider.dart';
@@ -90,7 +91,7 @@ class ContractForm extends StatelessWidget {
                             appState.setContractForm(key: "合約名稱", value: value);
                           },
                           decoration: InputDecoration(
-                            hintText: "e.g. XX牙技所服務平台合約",
+                              hintText: "e.g. XX牙技所服務平台合約",
                               contentPadding: EdgeInsets.only(left: 10),
                               enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
@@ -182,51 +183,13 @@ class ContractForm extends StatelessWidget {
                 children: [
                   TableRow(children: [
                     Text("收費方案"),
-                    Wrap(
-                      spacing: 12,
-                      runSpacing: 6,
-                      children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Radio(
-                                value: "month",
-                                groupValue: paymentMethods,
-                                onChanged: (String? value) {
-                                  appState.setContractForm(
-                                      key: "合約收費方案", value: value ?? "season");
-                                }),
-                            Text("月繳"),
-                          ],
-                        ),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Radio(
-                                value: "season",
-                                groupValue: paymentMethods,
-                                onChanged: (String? value) {
-                                  appState.setContractForm(
-                                      key: "合約收費方案", value: value ?? "season");
-                                }),
-                            Text("季繳"),
-                          ],
-                        ),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Radio(
-                                value: "year",
-                                groupValue: paymentMethods,
-                                onChanged: (String? value) {
-                                  appState.setContractForm(
-                                      key: "合約收費方案", value: value ?? "season");
-                                }),
-                            Text("年繳"),
-                          ],
-                        ),
-                      ],
-                    )
+                    CustomRadioGroup(
+                        fallbackValue: "季繳",
+                        groupOptions: ["月繳", "季繳", "年繳"],
+                        groupValue: paymentMethods ?? "季繳",
+                        onChange: (String value) {
+                          appState.setContractForm(key: "合約收費方案", value: value);
+                        })
                   ]),
                   TableRow(children: [
                     Text("下次繳費日期"),
@@ -240,7 +203,8 @@ class ContractForm extends StatelessWidget {
                               initialDate: appState.contractForm["下次收費日期"],
                               onSelect: (String? value) {
                                 // print("You select date $value");
-                                appState.setContractForm(key: "下次收費日期", value: value ?? "");
+                                appState.setContractForm(
+                                    key: "下次收費日期", value: value ?? "");
                               },
                             )),
                       ],
@@ -267,7 +231,8 @@ class ContractForm extends StatelessWidget {
                           child: TextFormField(
                             initialValue: appState.contractForm["合約註記"],
                             onChanged: (value) {
-                              appState.setContractForm(key: "合約註記", value: value);
+                              appState.setContractForm(
+                                  key: "合約註記", value: value);
                             },
                             keyboardType: TextInputType.multiline,
                             maxLines: null,

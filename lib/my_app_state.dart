@@ -15,7 +15,7 @@ class MyAppState extends ChangeNotifier {
     '牙技所縣市': '請選擇',
     '牙技所鄉鎮市區': '請選擇',
     '牙技所地址': '',
-    '牙技所狀態': "contact", // contact: 聯繫中, underContract： 合約中, terminated： 已解約
+    '牙技所狀態': "合約中", // contact: 聯繫中, underContract： 合約中, terminated： 已解約
     '備註': "",
   };
 
@@ -28,7 +28,7 @@ class MyAppState extends ChangeNotifier {
     '合約到期日': DateFormat('yyyy-MM-dd').format(DateTime(
         DateTime.now().year + 1, DateTime.now().month, DateTime.now().day)),
     '合約建立日': DateFormat('yyyy-MM-dd').format(DateTime.now()),
-    '合約收費方案': "season", // month: 月繳, season: 季繳, year: 年繳
+    '合約收費方案': "季繳", // month: 月繳, season: 季繳, year: 年繳
     '下次收費日期': DateFormat('yyyy-MM-dd').format(DateTime(
         DateTime.now().year, DateTime.now().month + 1, DateTime.now().day)),
     "已繳期數 / 總期數": "0 / 12",

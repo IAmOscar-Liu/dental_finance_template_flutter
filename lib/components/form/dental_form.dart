@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:namer_app/components/custom/custom_dropdown_menu.dart';
+import 'package:namer_app/components/custom/custom_radio_group.dart';
 import 'package:namer_app/district.dart';
 import 'package:namer_app/my_app_state.dart';
 import 'package:provider/provider.dart';
@@ -231,54 +232,13 @@ class DentalForm extends StatelessWidget {
                   children: [
                     TableRow(children: [
                       Text("牙技所狀態"),
-                      Wrap(
-                        spacing: 12,
-                        runSpacing: 6,
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Radio(
-                                  value: "contact",
-                                  groupValue: dentalStatus,
-                                  onChanged: (String? value) {
-                                    appState.setDentalForm(
-                                        key: "牙技所狀態",
-                                        value: value ?? "contact");
-                                  }),
-                              Text("聯繫中"),
-                            ],
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Radio(
-                                  value: "underContract",
-                                  groupValue: dentalStatus,
-                                  onChanged: (String? value) {
-                                    appState.setDentalForm(
-                                        key: "牙技所狀態",
-                                        value: value ?? "contact");
-                                  }),
-                              Text("合約中"),
-                            ],
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Radio(
-                                  value: "terminated",
-                                  groupValue: dentalStatus,
-                                  onChanged: (String? value) {
-                                    appState.setDentalForm(
-                                        key: "牙技所狀態",
-                                        value: value ?? "contact");
-                                  }),
-                              Text("已解約"),
-                            ],
-                          )
-                        ],
-                      )
+                      CustomRadioGroup(
+                          fallbackValue: "合約中",
+                          groupOptions: ["聯繫中", "合約中", "已解約"],
+                          groupValue: dentalStatus ?? "合約中",
+                          onChange: (String value) {
+                            appState.setDentalForm(key: "牙技所狀態", value: value);
+                          })
                     ]),
                     TableRow(children: [
                       Text("牙技所合約類別"),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomDropdownMenu extends StatelessWidget {
+class CustomDropdownMenu extends StatefulWidget {
   const CustomDropdownMenu(
       {super.key,
       required this.labelname,
@@ -14,24 +14,37 @@ class CustomDropdownMenu extends StatelessWidget {
   final Function onSelect;
 
   @override
+  State<CustomDropdownMenu> createState() => _CustomDropdownMenuState();
+}
+
+class _CustomDropdownMenuState extends State<CustomDropdownMenu> {
+  final TextEditingController controller = TextEditingController();
+
+  String? selectedValue;
+
+  @override
   Widget build(BuildContext context) {
     final List<DropdownMenuEntry<String>> entries =
         <DropdownMenuEntry<String>>[];
 
     // entries.add(DropdownMenuEntry(value: "請選擇", label: "請選擇", enabled: false));
-    for (int i = 0; i < menuSelections.length; i++) {
+    for (int i = 0; i < widget.menuSelections.length; i++) {
       entries.add(DropdownMenuEntry<String>(
-        value: menuSelections[i],
-        label: menuSelections[i],
+        value: widget.menuSelections[i],
+        label: widget.menuSelections[i],
       ));
     }
 
     return DropdownMenu<String>(
-      initialSelection: initialSelection,
-      label: Text(labelname),
+      initialSelection: widget.initialSelection,
+      controller: controller,
+      label: Text(widget.labelname),
       dropdownMenuEntries: entries,
       onSelected: (value) {
-        onSelect(value);
+        setState(() {
+          selectedValue = value;
+        });
+        widget.onSelect(value);
       },
     );
   }
