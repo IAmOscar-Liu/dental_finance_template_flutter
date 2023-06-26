@@ -3,6 +3,9 @@ import 'package:namer_app/components/custom/custom_page_title.dart';
 import 'package:namer_app/components/form/contract_form.dart';
 import 'package:namer_app/components/form/dental_form.dart';
 import 'package:namer_app/components/form/summarize_form.dart';
+import 'package:namer_app/my_app_state.dart';
+import 'package:namer_app/services/dio_client.dart';
+import 'package:provider/provider.dart';
 
 class OrderPage extends StatefulWidget {
   @override
@@ -10,7 +13,42 @@ class OrderPage extends StatefulWidget {
 }
 
 class _OrderPageState extends State<OrderPage> {
+  DioClient _client = DioClient();
+
   int currentFormStep = 1;
+  List<GlobalKey<FormState>> formKeys = [
+    GlobalKey<FormState>(),
+    GlobalKey<FormState>()
+  ];
+
+  bool isValidForm(BuildContext context, MyAppState appState) {
+    if (currentFormStep == 3) return true;
+    bool result = formKeys[currentFormStep - 1].currentState!.validate();
+
+    if (currentFormStep == 1) {
+      if (appState.dentalForm["牙技所縣市"] == "請選擇") {
+        appState.setDentalAddressCityErrorMessage("This field is required");
+        result = false;
+      } else {
+        appState.setDentalAddressCityErrorMessage(null);
+      }
+
+      if (appState.dentalForm["牙技所鄉鎮市區"] == "請選擇") {
+        appState.setDentalAddressDistrictErrorMessage("This field is required");
+        result = false;
+      } else {
+        appState.setDentalAddressDistrictErrorMessage(null);
+      }
+    }
+
+    return result;
+  }
+
+  void showInvalidFormMessage(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content:
+            Text("Invalid form data, please fill out the form correctly.")));
+  }
 
   Color getActiveColor(int formStep) {
     return formStep == currentFormStep ? Colors.black : Colors.grey;
@@ -19,9 +57,13 @@ class _OrderPageState extends State<OrderPage> {
   Widget getCurrentForm() {
     switch (currentFormStep) {
       case 1:
-        return DentalForm();
+        return DentalForm(
+          formKey: formKeys[0],
+        );
       case 2:
-        return ContractForm();
+        return ContractForm(
+          formKey: formKeys[1],
+        );
       case 3:
         return SummarizeForm();
       default:
@@ -29,12 +71,20 @@ class _OrderPageState extends State<OrderPage> {
     }
   }
 
-  Widget multiStepTextButton({required int step, required String title}) {
+  Widget multiStepTextButton(
+      {required BuildContext context,
+      required MyAppState appState,
+      required int step,
+      required String title}) {
     return TextButton(
         onPressed: () {
-          setState(() {
-            currentFormStep = step;
-          });
+          if (step == currentFormStep) return;
+          if (step < currentFormStep || isValidForm(context, appState)) {
+            return setState(() {
+              currentFormStep = step;
+            });
+          }
+          showInvalidFormMessage(context);
         },
         child: Row(
           children: [
@@ -64,7 +114,7 @@ class _OrderPageState extends State<OrderPage> {
 
   @override
   Widget build(BuildContext context) {
-    // MyAppState appState = context.watch<MyAppState>();
+    MyAppState appState = context.watch<MyAppState>();
 
     return SizedBox.expand(
       child: SingleChildScrollView(
@@ -96,19 +146,31 @@ class _OrderPageState extends State<OrderPage> {
                           flex: 5,
                           child: Row(
                             children: [
-                              multiStepTextButton(step: 1, title: "牙技所資料設定"),
+                              multiStepTextButton(
+                                  context: context,
+                                  appState: appState,
+                                  step: 1,
+                                  title: "牙技所資料設定"),
                               Expanded(
                                   child: Container(
                                 height: 2,
                                 color: Colors.grey,
                               )),
-                              multiStepTextButton(step: 2, title: "合約資料設定"),
+                              multiStepTextButton(
+                                  context: context,
+                                  appState: appState,
+                                  step: 2,
+                                  title: "合約資料設定"),
                               Expanded(
                                   child: Container(
                                 height: 2,
                                 color: Colors.grey,
                               )),
-                              multiStepTextButton(step: 3, title: "合約內容確認"),
+                              multiStepTextButton(
+                                  context: context,
+                                  appState: appState,
+                                  step: 3,
+                                  title: "合約內容確認"),
                             ],
                           ),
                         ),
@@ -116,7 +178,25 @@ class _OrderPageState extends State<OrderPage> {
                           flex: 1,
                         ),
                         FilledButton(
-                            onPressed: currentFormStep != 3 ? null : () {},
+                            onPressed: currentFormStep != 3
+                                ? null
+                                : () {
+                                    _client
+                                        .createDentalAndContract(
+                                            dentalForm: appState.dentalForm,
+                                            contractForm: appState.contractForm)
+                                        .then((_) {
+                                      appState.resetAllForms();
+
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                              content: Text(
+                                                  "Contract has been submitted!")));
+
+                                      Navigator.pushNamed(
+                                          context, "/management");
+                                    });
+                                  },
                             child: Text("送出合約"))
                       ]),
                       SizedBox(
@@ -148,9 +228,14 @@ class _OrderPageState extends State<OrderPage> {
                                       onPressed: currentFormStep == 3
                                           ? null
                                           : () {
-                                              setState(() {
-                                                currentFormStep++;
-                                              });
+                                              if (isValidForm(
+                                                  context, appState)) {
+                                                setState(() {
+                                                  currentFormStep++;
+                                                });
+                                              } else {
+                                                showInvalidFormMessage(context);
+                                              }
                                             },
                                       child: Text("下一步")),
                                 ],

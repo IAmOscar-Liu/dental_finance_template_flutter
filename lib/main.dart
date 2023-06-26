@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 
 // flutter run -d chrome --web-renderer html
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 
