@@ -4,18 +4,15 @@ import 'package:namer_app/components/custom/custom_dropdown_menu.dart';
 import 'package:namer_app/components/custom/custom_radio_group.dart';
 import 'package:namer_app/components/custom/custom_text_form_field_date.dart';
 import 'package:namer_app/my_app_state.dart';
-import 'package:provider/provider.dart';
 
 class ContractForm extends StatelessWidget {
-  const ContractForm({super.key, required this.formKey});
+  const ContractForm({super.key, required this.formKey, required this.appState});
 
   final Key formKey;
+  final MyAppState appState;
 
   @override
   Widget build(BuildContext context) {
-    MyAppState appState = context.watch<MyAppState>();
-    String? paymentMethods = appState.contractForm["合約收費方式"];
-
     return Form(
         key: formKey,
         child: Row(
@@ -225,7 +222,7 @@ class ContractForm extends StatelessWidget {
                         CustomRadioGroup(
                             fallbackValue: "季繳",
                             groupOptions: ["月繳", "季繳", "年繳"],
-                            groupValue: paymentMethods ?? "季繳",
+                            groupValue: appState.contractForm["合約收費方式"] ?? "季繳",
                             onChange: (String value) {
                               appState.setContractForm(
                                   key: "合約收費方式", value: value);

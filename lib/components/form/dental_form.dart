@@ -3,18 +3,15 @@ import 'package:namer_app/components/custom/custom_dropdown_menu.dart';
 import 'package:namer_app/components/custom/custom_radio_group.dart';
 import 'package:namer_app/district.dart';
 import 'package:namer_app/my_app_state.dart';
-import 'package:provider/provider.dart';
 
 class DentalForm extends StatelessWidget {
-  const DentalForm({super.key, required this.formKey});
+  const DentalForm({super.key, required this.formKey, required this.appState});
 
   final Key formKey;
+  final MyAppState appState;
 
   @override
   Widget build(BuildContext context) {
-    MyAppState appState = context.watch<MyAppState>();
-    String? dentalStatus = appState.dentalForm["牙技所狀態"];
-
     return Form(
       key: formKey,
       child: Row(
@@ -303,7 +300,7 @@ class DentalForm extends StatelessWidget {
                       CustomRadioGroup(
                           fallbackValue: "合約中",
                           groupOptions: ["聯繫中", "合約中", "已解約"],
-                          groupValue: dentalStatus ?? "合約中",
+                          groupValue: appState.dentalForm["牙技所狀態"] ?? "合約中",
                           onChange: (String value) {
                             appState.setDentalForm(key: "牙技所狀態", value: value);
                           })

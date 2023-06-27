@@ -54,15 +54,17 @@ class _OrderPageState extends State<OrderPage> {
     return formStep == currentFormStep ? Colors.black : Colors.grey;
   }
 
-  Widget getCurrentForm() {
+  Widget getCurrentForm({required MyAppState appState}) {
     switch (currentFormStep) {
       case 1:
         return DentalForm(
           formKey: formKeys[0],
+          appState: appState,
         );
       case 2:
         return ContractForm(
           formKey: formKeys[1],
+          appState: appState,
         );
       case 3:
         return SummarizeForm();
@@ -240,7 +242,7 @@ class _OrderPageState extends State<OrderPage> {
                                       child: Text("下一步")),
                                 ],
                               ),
-                              getCurrentForm()
+                              getCurrentForm(appState: appState)
                             ],
                           ),
                         ),
