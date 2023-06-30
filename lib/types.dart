@@ -1,3 +1,10 @@
+enum CurrentFormStep {
+  dental,
+  contract,
+  contractAdvance,
+  summarize
+}
+
 enum PaymentMethods {
   month,
   season,
@@ -15,14 +22,20 @@ enum ContractDisplay {
   service,
   equipmentRental,
   equipmentSale,
+}
 
+enum DentalDisplay {
+  all,
+  contact,
+  underContract,
+  terminated,
 }
 
 class TableRowData {
   const TableRowData({required this.isHeaderOrFooter, required this.rowData});
 
   final bool isHeaderOrFooter;
-  final List<String >rowData;
+  final List<String> rowData;
 }
 
 class TableData {

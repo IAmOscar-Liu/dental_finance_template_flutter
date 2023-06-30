@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:namer_app/components/custom/custom_page.dart';
 import 'package:namer_app/my_app_state.dart';
+import 'package:namer_app/page/dental_management_page.dart';
 import 'package:namer_app/page/favorite_page.dart';
 import 'package:namer_app/page/finance_page.dart';
 import 'package:namer_app/page/home_page.dart';
-import 'package:namer_app/page/management_page.dart';
+import 'package:namer_app/page/contract_management_page.dart';
 import 'package:namer_app/page/not_found_page.dart';
-import 'package:namer_app/page/order_page.dart';
+import 'package:namer_app/page/create_contract_page.dart';
+import 'package:namer_app/page/create_dental_page.dart';
 import 'package:provider/provider.dart';
 
 // flutter run -d chrome --web-renderer html
@@ -19,8 +21,10 @@ final Map<String, Widget> myRoutes = {
   "/": HomePage(),
   '/favorites': FavoritePage(),
   '/finance': FinancePage(),
-  "/management": ManagementPage(),
-  '/management/new': OrderPage(),
+  '/dental-management': DentalManagementPage(),
+  '/dental-management/new': CreateDentalPage(),
+  "/contract-management": ContractManagementPage(),
+  '/contract-management/new': CreateContractPage(),
 };
 
 class MyApp extends StatelessWidget {

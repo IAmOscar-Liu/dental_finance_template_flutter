@@ -24,14 +24,26 @@ final List<Item> navigationDestinations = [
   ),
   Item(
     iconData: Icons.dvr,
+    title: '牙技所管理',
+    pathname: "/dental-management",
+    hasChildren: true,
+  ),
+  Item(
+    iconData: Icons.add,
+    title: '新增牙技所',
+    pathname: "/dental-management/new",
+    hasChildren: false,
+  ),
+  Item(
+    iconData: Icons.dvr,
     title: '合約管理',
-    pathname: "/management",
+    pathname: "/contract-management",
     hasChildren: true,
   ),
   Item(
     iconData: Icons.add,
     title: '新增合約',
-    pathname: "/management/new",
+    pathname: "/contract-management/new",
     hasChildren: false,
   ),
   Item(

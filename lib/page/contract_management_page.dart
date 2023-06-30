@@ -6,13 +6,13 @@ import 'package:namer_app/types.dart';
 List<String> contractBriefKeys = [
   "合約ID",
   "合約編號",
-  "合約種類",
   "合約名稱",
-  "牙技所ID",
+  "合約種類",
+  "合約簽約日",
   "牙技所名稱",
+  "牙技所統一編號",
   "牙技所狀態",
-  "合約起始日",
-  "合約到期日"
+  "合約細節",
 ];
 
 // List<Map<String, String>> dummyTableData = [
@@ -51,22 +51,22 @@ List<String> contractBriefKeys = [
 //   }
 // ];
 
-class ManagementPage extends StatefulWidget {
-  const ManagementPage({super.key});
+class ContractManagementPage extends StatefulWidget {
+  const ContractManagementPage({super.key});
 
   @override
-  State<ManagementPage> createState() => _ManagementPageState();
+  State<ContractManagementPage> createState() => _ContractManagementPageState();
 }
 
-class _ManagementPageState extends State<ManagementPage> {
+class _ContractManagementPageState extends State<ContractManagementPage> {
   final DioClient client = DioClient();
 
   bool isLoading = true;
   String? errorText;
   dynamic _contractDisplay = ContractDisplay.all;
   // List<Map<String, String>> _filteredTableData = dummyTableData;
-  List<Map<String, String>> _filteredTableData = [];
-  Map<dynamic, List<Map<String, String>>> _lookupTable = {
+  List<Map<String, dynamic>> _filteredTableData = [];
+  Map<dynamic, List<Map<String, dynamic>>> _lookupTable = {
     // ContractDisplay.all: dummyTableData
   };
 
@@ -74,10 +74,10 @@ class _ManagementPageState extends State<ManagementPage> {
       backgroundColor: Color.fromRGBO(176, 47, 1, 1),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)));
 
-  List<Map<String, String>> getFilteredTableData(dynamic filter) {
+  List<Map<String, dynamic>> getFilteredTableData(dynamic filter) {
     if (_lookupTable.containsKey(filter)) return _lookupTable[filter] ?? [];
 
-    final List<Map<String, String>> results =
+    final List<Map<String, dynamic>> results =
         _filteredTableData.where((element) {
       if (filter == ContractDisplay.all ||
           (filter == ContractDisplay.service && element["合約種類"] == "服務平台合約") ||
@@ -102,7 +102,11 @@ class _ManagementPageState extends State<ManagementPage> {
         children: contractBriefKeys
             .map((key) => Padding(
                   padding: EdgeInsets.symmetric(vertical: 6, horizontal: 6),
-                  child: Text(key),
+                  child: key == "合約細節"
+                      ? Center(
+                          child: Text(key),
+                        )
+                      : Text(key),
                 ))
             .toList(),
       ),
@@ -117,7 +121,9 @@ class _ManagementPageState extends State<ManagementPage> {
               .map(
                 (key) => Padding(
                   padding: EdgeInsets.symmetric(vertical: 6, horizontal: 6),
-                  child: Text(row[key] ?? ""),
+                  child: key == "合約細節"
+                      ? TextButton(onPressed: () {}, child: Text("查看細節"))
+                      : Text((row[key] ?? "").toString()),
                 ),
               )
               .toList(),
@@ -132,18 +138,23 @@ class _ManagementPageState extends State<ManagementPage> {
       errorText = null;
     });
 
-    client.getContractsBrief().then((value) {
-      setState(() {
-        _filteredTableData = value;
-        isLoading = false;
-      });
-    }).catchError((error) {
-      setState(() {
-        errorText = error.toString();
-        isLoading = false;
-      });
-    });
+    Future<void> startFetch() async {
+      // await Future.delayed(Duration(seconds: 2));
 
+      return client.getContractsBrief().then((value) {
+        setState(() {
+          _filteredTableData = value;
+          isLoading = false;
+        });
+      }).catchError((error) {
+        setState(() {
+          errorText = error.toString();
+          isLoading = false;
+        });
+      });
+    }
+
+    startFetch();
     super.initState();
   }
 
@@ -155,7 +166,7 @@ class _ManagementPageState extends State<ManagementPage> {
           child: Padding(
             padding: EdgeInsets.only(left: 24, top: 24, right: 24, bottom: 36),
             child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: 1000),
+              constraints: BoxConstraints(maxWidth: 1080),
               child: Column(
                 children: [
                   CustomPageTitle(
@@ -291,7 +302,11 @@ class _ManagementPageState extends State<ManagementPage> {
                                     ),
                                     Spacer(),
                                     FilledButton(
-                                        onPressed: () {}, child: Text("新增合約")),
+                                        onPressed: () {
+                                          Navigator.pushNamed(context,
+                                              "/contract-management/new");
+                                        },
+                                        child: Text("新增合約")),
                                   ],
                                 ),
                                 SizedBox(
@@ -303,12 +318,12 @@ class _ManagementPageState extends State<ManagementPage> {
                                   columnWidths: {
                                     0: FlexColumnWidth(1),
                                     1: FlexColumnWidth(1.5),
-                                    2: FlexColumnWidth(1.5),
-                                    3: FlexColumnWidth(2),
-                                    4: FlexColumnWidth(1),
-                                    5: FlexColumnWidth(1.5),
-                                    6: FlexColumnWidth(1),
-                                    7: FlexColumnWidth(1.2),
+                                    2: FlexColumnWidth(2),
+                                    3: FlexColumnWidth(1.2),
+                                    4: FlexColumnWidth(1.2),
+                                    5: FlexColumnWidth(1.2),
+                                    6: FlexColumnWidth(1.3),
+                                    7: FlexColumnWidth(1),
                                     8: FlexColumnWidth(1.2),
                                   },
                                   children: getTableRows(),

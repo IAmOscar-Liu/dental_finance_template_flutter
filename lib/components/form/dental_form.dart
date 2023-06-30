@@ -34,57 +34,37 @@ class DentalForm extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Text("牙技所名稱"),
                       )),
-                  TableCell(
-                    verticalAlignment: TableCellVerticalAlignment.top,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: SizedBox(
-                              height: 64,
-                              child: TextFormField(
-                                initialValue: appState.dentalForm["牙技所名稱"],
-                                onChanged: (value) {
-                                  appState.setDentalForm(
-                                      key: "牙技所名稱", value: value);
-                                },
-                                validator: (value) => (value ?? "").isEmpty
-                                    ? "This field is required"
-                                    : null,
-                                keyboardType: TextInputType.multiline,
-                                maxLines: null,
-                                expands: true,
-                                decoration: InputDecoration(
-                                    hintText: "e.g. XX牙技所",
-                                    contentPadding: EdgeInsets.only(left: 10),
-                                    enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            width: 2, color: Colors.grey))),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 12,
-                          ),
-                          FilledButton(
-                              onPressed: () {},
-                              child: Text(
-                                "選擇既有牙技所",
-                                style: TextStyle(fontSize: 12),
-                              )),
-                        ],
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      height: 32,
+                      child: TextFormField(
+                        initialValue: appState.dentalForm["牙技所名稱"],
+                        onChanged: (value) {
+                          appState.setDentalForm(key: "牙技所名稱", value: value);
+                        },
+                        validator: (value) => (value ?? "").isEmpty
+                            ? "This field is required"
+                            : null,
+                        decoration: InputDecoration(
+                            hintText: "e.g. XX牙技所",
+                            contentPadding: EdgeInsets.only(left: 10),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 2, color: Colors.grey))),
                       ),
                     ),
                   ),
                 ]),
                 TableRow(children: [
-                  Text("牙技所ID"),
-                  Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Text(appState.dentalForm["牙技所ID"] ?? "Pending"),
-                  ),
+                  Text("牙技所狀態"),
+                  CustomRadioGroup(
+                      fallbackValue: "合約中",
+                      groupOptions: ["聯繫中", "合約中", "已解約"],
+                      groupValue: appState.dentalForm["牙技所狀態"] ?? "合約中",
+                      onChange: (String value) {
+                        appState.setDentalForm(key: "牙技所狀態", value: value);
+                      })
                 ]),
                 TableRow(children: [
                   Text("牙技所統一編號"),
@@ -159,27 +139,30 @@ class DentalForm extends StatelessWidget {
                   ),
                 ]),
                 TableRow(children: [
-                  Text("牙技所Email"),
+                  Text("牙技所地區"),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      height: 32,
-                      child: TextFormField(
-                        initialValue: appState.dentalForm["牙技所Email"],
-                        keyboardType: TextInputType.emailAddress,
-                        onChanged: (value) {
-                          appState.setDentalForm(key: "牙技所Email", value: value);
-                        },
-                        validator: (value) => (value ?? "").isEmpty
-                            ? "This field is required"
-                            : null,
-                        decoration: InputDecoration(
-                            hintText: "e.g. example@example.com",
-                            contentPadding: EdgeInsets.only(left: 10),
-                            enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 2, color: Colors.grey))),
-                      ),
+                    child: CustomDropdownMenu(
+                      // key: UniqueKey(),
+                      labelname: '牙技所地區',
+                      initialSelection: appState.dentalForm["牙技所地區"],
+                      menuSelections: [
+                        "亞洲-台灣",
+                        "亞洲-中國大陸",
+                        "亞洲-日本",
+                        "歐洲-英國",
+                        "歐洲-法國",
+                        "歐洲-德國",
+                        "歐洲-捷克",
+                        "美洲-美國",
+                        "美洲-加拿大"
+                      ],
+                      onSelect: (String? value) {
+                        // print("You select $value");
+                        appState.setDentalForm(
+                            key: "牙技所地區", value: value ?? "請選擇");
+                      },
+                      errorText: appState.dentalRegionErrorMessage,
                     ),
                   ),
                 ]),
@@ -270,6 +253,32 @@ class DentalForm extends StatelessWidget {
                   },
                   children: [
                     TableRow(children: [
+                      Text("牙技所Email"),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          height: 32,
+                          child: TextFormField(
+                            initialValue: appState.dentalForm["牙技所Email"],
+                            onChanged: (value) {
+                              appState.setDentalForm(
+                                  key: "牙技所Email", value: value);
+                            },
+                            validator: (value) => (value ?? "").isEmpty
+                                ? "This field is required"
+                                : null,
+                            keyboardType: TextInputType.url,
+                            decoration: InputDecoration(
+                                hintText: "e.g. example@example.com",
+                                contentPadding: EdgeInsets.only(left: 10),
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 2, color: Colors.grey))),
+                          ),
+                        ),
+                      ),
+                    ]),
+                    TableRow(children: [
                       Text("牙技所網址"),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -294,16 +303,6 @@ class DentalForm extends StatelessWidget {
                           ),
                         ),
                       ),
-                    ]),
-                    TableRow(children: [
-                      Text("牙技所狀態"),
-                      CustomRadioGroup(
-                          fallbackValue: "合約中",
-                          groupOptions: ["聯繫中", "合約中", "已解約"],
-                          groupValue: appState.dentalForm["牙技所狀態"] ?? "合約中",
-                          onChange: (String value) {
-                            appState.setDentalForm(key: "牙技所狀態", value: value);
-                          })
                     ]),
                     TableRow(children: [
                       TableCell(
