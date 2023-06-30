@@ -85,7 +85,7 @@ List<TableRow> getEquipmentPurchaseTableRow(
               SizedBox(
                 width: 8,
               ),
-              Text("件")
+              Text("TWD")
             ],
           ),
         ),
