@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:namer_app/components/custom/custom_dropdown_menu.dart';
-import 'package:namer_app/components/custom/custom_radio_group.dart';
 import 'package:namer_app/my_app_state.dart';
 
 void setContractDetail(
