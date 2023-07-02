@@ -59,10 +59,10 @@ class ContractManagementPage extends StatefulWidget {
 }
 
 class _ContractManagementPageState extends State<ContractManagementPage> {
-  final DioClient client = DioClient();
+  final DioClient _client = DioClient();
 
-  bool isLoading = true;
-  String? errorText;
+  bool _isLoading = true;
+  String? _errorText;
   dynamic _contractDisplay = ContractDisplay.all;
   // List<Map<String, String>> _filteredTableData = dummyTableData;
   List<Map<String, dynamic>> _filteredTableData = [];
@@ -134,22 +134,22 @@ class _ContractManagementPageState extends State<ContractManagementPage> {
   @override
   void initState() {
     setState(() {
-      isLoading = true;
-      errorText = null;
+      _isLoading = true;
+      _errorText = null;
     });
 
     Future<void> startFetch() async {
       // await Future.delayed(Duration(seconds: 2));
 
-      return client.getContractsBrief().then((value) {
+      return _client.getContractsBrief().then((value) {
         setState(() {
           _filteredTableData = value;
-          isLoading = false;
+          _isLoading = false;
         });
       }).catchError((error) {
         setState(() {
-          errorText = error.toString();
-          isLoading = false;
+          _errorText = error.toString();
+          _isLoading = false;
         });
       });
     }
@@ -196,16 +196,16 @@ class _ContractManagementPageState extends State<ContractManagementPage> {
                   SizedBox(
                     height: 12,
                   ),
-                  isLoading
+                  _isLoading
                       ? SizedBox(
                           height: 300,
                           child: Center(child: CircularProgressIndicator()))
-                      : (errorText ?? "").isNotEmpty
+                      : (_errorText ?? "").isNotEmpty
                           ? SizedBox(
                               height: 300,
                               child: Center(
                                   child: Text(
-                                errorText!,
+                                _errorText!,
                                 style: TextStyle(color: Colors.red),
                               )))
                           : Column(

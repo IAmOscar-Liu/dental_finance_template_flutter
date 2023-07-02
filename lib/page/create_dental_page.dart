@@ -14,18 +14,18 @@ class CreateDentalPage extends StatefulWidget {
 
 class _CreateDentalPageState extends State<CreateDentalPage> {
   DioClient _client = DioClient();
-  final List<CurrentFormStep> formSteps = [
+  final List<CurrentFormStep> _formSteps = [
     CurrentFormStep.dental,
     CurrentFormStep.summarize
   ];
-  CurrentFormStep currentFormStep = CurrentFormStep.dental;
-  GlobalKey<FormState> dentalFormKey = GlobalKey<FormState>();
+  CurrentFormStep _currentFormStep = CurrentFormStep.dental;
+  GlobalKey<FormState> _dentalFormKey = GlobalKey<FormState>();
 
   bool isValidForm(BuildContext context, MyAppState appState) {
-    if (currentFormStep == CurrentFormStep.summarize) return true;
-    bool result = dentalFormKey.currentState!.validate();
+    if (_currentFormStep == CurrentFormStep.summarize) return true;
+    bool result = _dentalFormKey.currentState!.validate();
 
-    if (currentFormStep == CurrentFormStep.dental) {
+    if (_currentFormStep == CurrentFormStep.dental) {
       if (appState.dentalForm["牙技所地區"] == "請選擇") {
         appState.setDentalRegionErrorMessage("This field is required");
         result = false;
@@ -58,14 +58,14 @@ class _CreateDentalPageState extends State<CreateDentalPage> {
   }
 
   Color getActiveColor(CurrentFormStep formStep) {
-    return formStep == currentFormStep ? Colors.black : Colors.grey;
+    return formStep == _currentFormStep ? Colors.black : Colors.grey;
   }
 
   Widget getCurrentForm({required MyAppState appState}) {
-    switch (currentFormStep) {
+    switch (_currentFormStep) {
       case CurrentFormStep.dental:
         return DentalForm(
-          formKey: dentalFormKey,
+          formKey: _dentalFormKey,
           appState: appState,
         );
       case CurrentFormStep.summarize:
@@ -84,11 +84,11 @@ class _CreateDentalPageState extends State<CreateDentalPage> {
       required String title}) {
     return TextButton(
         onPressed: () {
-          if (step == currentFormStep) return;
-          if (formSteps.indexOf(step) < formSteps.indexOf(currentFormStep) ||
+          if (step == _currentFormStep) return;
+          if (_formSteps.indexOf(step) < _formSteps.indexOf(_currentFormStep) ||
               isValidForm(context, appState)) {
             return setState(() {
-              currentFormStep = step;
+              _currentFormStep = step;
             });
           }
           showInvalidFormMessage(context);
@@ -103,7 +103,7 @@ class _CreateDentalPageState extends State<CreateDentalPage> {
                   borderRadius: BorderRadius.circular(1000)),
               child: Center(
                 child: Text(
-                  (formSteps.indexOf(step) + 1).toString(),
+                  (_formSteps.indexOf(step) + 1).toString(),
                   style: TextStyle(color: getActiveColor(step)),
                 ),
               ),
@@ -179,7 +179,7 @@ class _CreateDentalPageState extends State<CreateDentalPage> {
                         ),
                         FilledButton(
                             onPressed:
-                                currentFormStep != CurrentFormStep.summarize
+                                _currentFormStep != CurrentFormStep.summarize
                                     ? null
                                     : () {
                                         _client
@@ -214,34 +214,34 @@ class _CreateDentalPageState extends State<CreateDentalPage> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   TextButton(
-                                      onPressed:
-                                          formSteps.indexOf(currentFormStep) ==
-                                                  0
-                                              ? null
-                                              : () {
-                                                  setState(() {
-                                                    currentFormStep = formSteps[
-                                                        formSteps.indexOf(
-                                                                currentFormStep) -
-                                                            1];
-                                                  });
-                                                },
+                                      onPressed: _formSteps
+                                                  .indexOf(_currentFormStep) ==
+                                              0
+                                          ? null
+                                          : () {
+                                              setState(() {
+                                                _currentFormStep = _formSteps[
+                                                    _formSteps.indexOf(
+                                                            _currentFormStep) -
+                                                        1];
+                                              });
+                                            },
                                       child: Text("上一步")),
                                   SizedBox(
                                     width: 10,
                                   ),
                                   TextButton(
-                                      onPressed: formSteps
-                                                  .indexOf(currentFormStep) ==
-                                              formSteps.length - 1
+                                      onPressed: _formSteps
+                                                  .indexOf(_currentFormStep) ==
+                                              _formSteps.length - 1
                                           ? null
                                           : () {
                                               if (isValidForm(
                                                   context, appState)) {
                                                 setState(() {
-                                                  currentFormStep = formSteps[
-                                                      formSteps.indexOf(
-                                                              currentFormStep) +
+                                                  _currentFormStep = _formSteps[
+                                                      _formSteps.indexOf(
+                                                              _currentFormStep) +
                                                           1];
                                                 });
                                               } else {

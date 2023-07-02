@@ -16,24 +16,24 @@ class CreateContractPage extends StatefulWidget {
 class _CreateContractPageState extends State<CreateContractPage> {
   DioClient _client = DioClient();
 
-  final List<CurrentFormStep> formSteps = [
+  final List<CurrentFormStep> _formSteps = [
     CurrentFormStep.contract,
     CurrentFormStep.contractAdvance,
     CurrentFormStep.summarize
   ];
-  CurrentFormStep currentFormStep = CurrentFormStep.contract;
-  GlobalKey<FormState> contractFormKey = GlobalKey<FormState>();
-  GlobalKey<FormState> contractAdvanceFormKey = GlobalKey<FormState>();
+  CurrentFormStep _currentFormStep = CurrentFormStep.contract;
+  GlobalKey<FormState> _contractFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> _contractAdvanceFormKey = GlobalKey<FormState>();
 
   bool isValidForm(BuildContext context, MyAppState appState) {
-    if (currentFormStep == CurrentFormStep.summarize) return true;
-    bool result = (currentFormStep == CurrentFormStep.contract
-            ? contractFormKey
-            : contractAdvanceFormKey)
+    if (_currentFormStep == CurrentFormStep.summarize) return true;
+    bool result = (_currentFormStep == CurrentFormStep.contract
+            ? _contractFormKey
+            : _contractAdvanceFormKey)
         .currentState!
         .validate();
 
-    if (currentFormStep == CurrentFormStep.contract) {
+    if (_currentFormStep == CurrentFormStep.contract) {
       if (appState.contractForm["合約種類"] == "請選擇") {
         appState.setContractContractTypeErrorMessage("This field is required");
         result = false;
@@ -59,19 +59,19 @@ class _CreateContractPageState extends State<CreateContractPage> {
   }
 
   Color getActiveColor(CurrentFormStep formStep) {
-    return formStep == currentFormStep ? Colors.black : Colors.grey;
+    return formStep == _currentFormStep ? Colors.black : Colors.grey;
   }
 
   Widget getCurrentForm({required MyAppState appState}) {
-    switch (currentFormStep) {
+    switch (_currentFormStep) {
       case CurrentFormStep.contract:
         return ContractForm(
-          formKey: contractFormKey,
+          formKey: _contractFormKey,
           appState: appState,
         );
       case CurrentFormStep.contractAdvance:
         return ContractFormAdcvance(
-            formKey: contractAdvanceFormKey, appState: appState);
+            formKey: _contractAdvanceFormKey, appState: appState);
       case CurrentFormStep.summarize:
         return SummarizeForm();
       default:
@@ -86,11 +86,11 @@ class _CreateContractPageState extends State<CreateContractPage> {
       required String title}) {
     return TextButton(
         onPressed: () {
-          if (step == currentFormStep) return;
-          if (formSteps.indexOf(step) < formSteps.indexOf(currentFormStep) ||
+          if (step == _currentFormStep) return;
+          if (_formSteps.indexOf(step) < _formSteps.indexOf(_currentFormStep) ||
               isValidForm(context, appState)) {
             return setState(() {
-              currentFormStep = step;
+              _currentFormStep = step;
             });
           }
           showInvalidFormMessage(context);
@@ -105,7 +105,7 @@ class _CreateContractPageState extends State<CreateContractPage> {
                   borderRadius: BorderRadius.circular(1000)),
               child: Center(
                 child: Text(
-                  (formSteps.indexOf(step) + 1).toString(),
+                  (_formSteps.indexOf(step) + 1).toString(),
                   style: TextStyle(color: getActiveColor(step)),
                 ),
               ),
@@ -190,7 +190,7 @@ class _CreateContractPageState extends State<CreateContractPage> {
                           flex: 1,
                         ),
                         FilledButton(
-                            onPressed: currentFormStep !=
+                            onPressed: _currentFormStep !=
                                     CurrentFormStep.summarize
                                 ? null
                                 : () {
@@ -228,14 +228,14 @@ class _CreateContractPageState extends State<CreateContractPage> {
                                 children: [
                                   TextButton(
                                       onPressed:
-                                          formSteps.indexOf(currentFormStep) ==
+                                          _formSteps.indexOf(_currentFormStep) ==
                                                   0
                                               ? null
                                               : () {
                                                   setState(() {
-                                                    currentFormStep = formSteps[
-                                                        formSteps.indexOf(
-                                                                currentFormStep) -
+                                                    _currentFormStep = _formSteps[
+                                                        _formSteps.indexOf(
+                                                                _currentFormStep) -
                                                             1];
                                                   });
                                                 },
@@ -244,16 +244,16 @@ class _CreateContractPageState extends State<CreateContractPage> {
                                     width: 10,
                                   ),
                                   TextButton(
-                                      onPressed: currentFormStep ==
+                                      onPressed: _currentFormStep ==
                                               CurrentFormStep.summarize
                                           ? null
                                           : () {
                                               if (isValidForm(
                                                   context, appState)) {
                                                 setState(() {
-                                                  currentFormStep = formSteps[
-                                                      formSteps.indexOf(
-                                                              currentFormStep) +
+                                                  _currentFormStep = _formSteps[
+                                                      _formSteps.indexOf(
+                                                              _currentFormStep) +
                                                           1];
                                                 });
                                               } else {
