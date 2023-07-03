@@ -75,12 +75,15 @@ class _DentalManagementPageState extends State<DentalManagementPage> {
           children: dentalBriefKeys
               .map(
                 (key) => Padding(
-                  padding: EdgeInsets.symmetric(vertical: 6, horizontal: 6),
-                  child: Text(key == "牙技所地址"
-                      ? (row["牙技所縣市"].toString()) +
-                          (row["牙技所鄉鎮市區"]).toString() +
-                          (row[key] ?? "").toString()
-                      : (row[key] ?? "").toString()),
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 6),
+                  child: Text(
+                    key == "牙技所地址"
+                        ? (row["牙技所縣市"].toString()) +
+                            (row["牙技所鄉鎮市區"]).toString() +
+                            (row[key] ?? "").toString()
+                        : (row[key] ?? "").toString(),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               )
               .toList(),
